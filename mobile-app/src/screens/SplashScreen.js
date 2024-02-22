@@ -23,7 +23,6 @@ import moment from "moment";
 const animatedValue = new Animated.Value(0);
 
 function SplashScreen(props) {
-
     const navigateToMain = () => {
         //let navTo = setTimeout(() => props.loadApplication &&
         let navTo = setTimeout(() => props.loadApplication &&
@@ -81,7 +80,7 @@ function SplashScreen(props) {
             let lastRequest = await AsyncStorage.getItem("LAST_REQUEST")
             lastRequest = JSON.parse(lastRequest)
             let currentDateTime = moment().format();
-
+            
             if (callAPI == true || (lastRequest == null || currentDateTime > lastRequest)) {
                 getApi.getData(
                     "getHomePageInit?language=" + language + '&device_id=' + deviceID + '&deviceType=' + deviceType,

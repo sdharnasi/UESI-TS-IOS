@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     },
     productName: {
         color: Colors().secondry_text_color,
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         fontSize: wp('3.5%'),
         textAlign: 'left'
     },
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
         flex: 0.70,
         textAlign: 'right',
         color: Colors().link_color,
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         fontSize: wp('2.8%'),
         textTransform: 'uppercase'
     }

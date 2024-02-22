@@ -48,6 +48,7 @@ function ForgotPasswordScreen(props) {
                     'user/forgotPassword',
                     sendData,
                 ).then((response => {
+                    
                     logfunction("RESPONSE ", response)
                     if (response.status == 1) {
                         logfunction("RESPONSE ", 'Success')

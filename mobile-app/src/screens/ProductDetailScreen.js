@@ -694,7 +694,8 @@ const styles = StyleSheet.create({
         fontFamily: Fonts.Font_Bold,
         textAlignVertical: 'center',
         flex: 0.80,
-        textAlign: 'left'
+        textAlign: 'left',
+        textTransform:'capitalize'
 
     },
     subContainer: {
@@ -704,7 +705,7 @@ const styles = StyleSheet.create({
         flex: 0.20,
         fontSize: wp('3%'),
         textAlignVertical: 'center',
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         textAlign: 'right',
 
     },
@@ -778,7 +779,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         textAlignVertical: 'center',
         color: Colors().text_color,
-        fontFamily: Fonts.Font_Semibold
+        fontFamily: Fonts.Font_Medium
 
     },
     arrowContainer: {
@@ -856,7 +857,7 @@ const styles = StyleSheet.create({
 
     },
     headingtext: {
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         fontSize: wp('4%'),
         marginTop: wp('2%'),
         marginBottom: wp('2%'),

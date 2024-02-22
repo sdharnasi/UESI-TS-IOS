@@ -15,15 +15,27 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { logfunction } from "@helpers/FunctionHelper";
 import Fonts from "@helpers/Fonts";
 import getApi from "@apis/getApi";
+import { doLogin } from '@actions';
+import { bindActionCreators } from "redux";
+import { getUniqueId, getManufacturer, getDeviceName } from 'react-native-device-info';
 
 function RegisterScreen(props) {
     const [formData, setData] = React.useState({ firstName: null, lastName: null, email: null, mobileNumber: null, password: null, cpassword: null, submited: false, type: null, message: null, loading: false });
     const [state, setDatapassword] = React.useState({ secureEntry: true });
     const [errors, setErrors] = React.useState({});
     const { firstName, lastName, mobileNumber, email, password, cpassword, submited, type, message, loading } = formData;
+    const [deviceId, setDeviceId] = React.useState('');
+    const [deviceName, setDeviceName] = React.useState('');
 
     useEffect(() => {
-
+        console.log(props.paymentModuleType);
+        console.log(props.FCM_TOKEN);
+        getUniqueId().then(data=>{
+            setDeviceId(data);
+        });
+        getDeviceName().then(data=>{
+            setDeviceName(data);
+        });
     }, []);
 
     const validate = () => {
@@ -89,6 +101,65 @@ function RegisterScreen(props) {
         return true;
 
     }
+    const login = () => {
+        //if (validate()) {
+            setData({
+                ...formData,
+                loading: true
+            });
+
+            let sendData = new FormData();
+            sendData.append('email', email);
+            sendData.append('password', password);
+            sendData.append('firebase_token', props.FCM_TOKEN);
+            try {
+                getApi.postData(
+                    'user/login',
+                    sendData,
+                ).then((response => {
+                    logfunction("RESPONSE ", response)
+                    if (response.status == 1) {
+                        logfunction("RESPONSE ", 'Success')
+                        setTimeout(() => {
+                        setData({
+                            ...formData,
+                            email: null,
+                            password: null,
+                            loading: false
+                        });
+                    },3000);
+                    }
+                    else {
+                        setData({
+                            ...formData,
+                            type: 'error',
+                            message: response.message,
+                            loading: false
+                        });
+                        setTimeout(() => {
+                            setData({
+                                ...formData,
+                                message: null,
+                                loading: false
+                            })
+                        }, 3000);
+                    }
+                    props.doLogin(response, '');
+                    setTimeout(()=>{
+                        if(props.paymentModuleType!=''){
+                            props.navigation.navigate('PaymentScreen',{paymentModuleType:props.paymentModuleType});
+                        }
+                    },2000);
+                }));
+            } catch (error) {
+                logfunction("Error", error)
+                setData({
+                    ...formData,
+                    loading: false
+                });
+            }
+        //}
+    }
 
     const register = () => {
         if (validate()) {
@@ -103,28 +174,32 @@ function RegisterScreen(props) {
             sendData.append('telephone', mobileNumber)
             sendData.append('password', password)
             sendData.append('creation', 'D')
-
+            sendData.append('device_id', deviceId );
+            sendData.append('device_name', deviceName );
+ 
             try {
                 getApi.postData(
                     'user/register',
                     sendData,
                 ).then((response => {
-                    logfunction("RESPONSE ", response)
+                    
+                    //logfunction("RESPONSE ", response)
                     if (response.status == 1) {
-                        props.navigation.navigate("RegisterSuccessScreen");
+                        login();
+                       // props.navigation.navigate("RegisterSuccessScreen");
                     }
                     else {
                         setData({
                             ...formData,
                             type: 'error',
                             message: response.message,
-                            loading: false
+                            //loading: false
                         });
                         setTimeout(() => {
                             setData({
                                 ...formData,
                                 message: null,
-                                loading: false
+                                //loading: false
                             })
                         }, 3000);
                     }
@@ -151,7 +226,7 @@ function RegisterScreen(props) {
                 </TouchableOpacity>
                 <View style={[{ flex: 0.95, justifyContent: 'center', alignContent: 'center' }]}>
                     <Text style={[GlobalStyles.authtabbarText, { lineHeight: hp('6%') }]}>{strings.registration.title}</Text>
-                    <Text style={[GlobalStyles.authSubText]}>{strings.registration.subtitle}</Text>
+                    <Text style={[GlobalStyles.authSubText,{paddingRight:10}]}>Create account to continue to get songs, videos and shopping with UESI-TS</Text>
                 </View>
             </OtrixHeader>
 
@@ -292,11 +367,18 @@ function RegisterScreen(props) {
 
 function mapStateToProps(state) {
     return {
-        strings: state.mainScreenInit.strings
+        strings: state.mainScreenInit.strings,
+        paymentModuleType: state.song.paymentModuleType,
+        FCM_TOKEN: state.mainScreenInit.firebaseToken
     }
 }
+const mapDispatchToProps = dispatch => (
+    bindActionCreators({
+        doLogin
+    }, dispatch)
+  );
 
-export default connect(mapStateToProps)(RegisterScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);
 
 const styles = StyleSheet.create({
     registerView: {
@@ -313,7 +395,7 @@ const styles = StyleSheet.create({
     signupTxt: {
         fontSize: wp('3.5%'),
         textAlign: 'right',
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         color: Colors().link_color
     },
 });

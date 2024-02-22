@@ -54,14 +54,14 @@ function PrivacyPolicyScreen(props) {
         <OtrixContainer customStyles={{ backgroundColor: Colors().light_white }}>
 
             {/* Header */}
-            <OtrixHeader customStyles={{ backgroundColor: Colors().light_white }}>
+            {/* <OtrixHeader customStyles={{ backgroundColor: Colors().light_white }}>
                 <TouchableOpacity style={GlobalStyles.headerLeft} onPress={() => props.navigation.goBack()}>
                     <OtirxBackButton />
                 </TouchableOpacity>
                 <View style={[GlobalStyles.headerCenter, { flex: 1 }]}>
                     <Text style={GlobalStyles.headingTxt}> {heading}</Text>
                 </View>
-            </OtrixHeader>
+            </OtrixHeader> */}
 
             {/* Orders Content start from here */}
             {
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     },
     txt: {
         fontSize: wp('4%'),
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         color: Colors().text_color,
         textAlign: 'left'
     }

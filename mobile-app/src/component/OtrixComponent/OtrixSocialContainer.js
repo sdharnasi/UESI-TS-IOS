@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors().light_white,
         paddingHorizontal: wp('3%'),
         fontSize: wp('3.4%'),
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         color: Colors().secondry_text_color,
     },
     socialContainer: {

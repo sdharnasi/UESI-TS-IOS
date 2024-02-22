@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useCallback } from "react";
 import {
     View,
     TouchableOpacity,
@@ -7,12 +7,13 @@ import {
     I18nManager,
     Platform,
     StyleSheet, ScrollView,
-    Modal
+    Modal,
+    Alert
 } from "react-native";
 import { connect } from 'react-redux';
 import { Button, Input, FormControl, Modal as NativeBaseModal } from 'native-base';
 import {
-    OtrixContainer, OtrixHeader, OtrixContent, OtrixDivider, CheckoutView, OtrixLoader, OtirxBackButton, AddAdressComponent, EditAddressComponent, PaymentSuccessComponent, CreditCartComponent
+    OtrixContainer, OtrixHeader, OtrixContent, OtrixDivider, CheckoutView, OtrixLoader, OtirxBackButton, AddAdressComponent, EditAddressComponent, PaymentSuccessComponent
 } from '@component';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { GlobalStyles, Colors } from '@helpers';
@@ -27,12 +28,14 @@ import { CURRENCY } from '@env';
 import getApi from "@apis/getApi";
 import { logfunction } from "@helpers/FunctionHelper";
 import { shipping } from '@common';
-
+import RazorpayCheckout from 'react-native-razorpay';
+import AsyncStorage from "@react-native-community/async-storage";
+import { useFocusEffect } from '@react-navigation/native';
 function CheckoutScreen(props) {
     const [state, setState] = React.useState({ loading: true, orderProducts: [], trx: 0, sub_total: 0, discount: null, shippingCharges: null, comment: null, countries: [], shippingData: [], showAdd: false, cartProducts: [], sumAmount: 0, noRecord: false, addresses: [], selctedAddress: 0, selectedShipping: 0, showEdit: false, editAddressData: [], step: 1, selectedPaymentMethod: null, paymentSuccessModal: false, message: null, creditCardModal: false, type: 'error', grandTotal: 0 });
     const [showMessage, setShowLoading] = React.useState(false)
     const { loading, showAdd, discount, addresses, orderProducts, sub_total, trx, comment, selctedAddress, shippingCharges, selectedShipping, showEdit, editAddressData, step, selectedPaymentMethod, paymentSuccessModal, countries, message, type, shippingData, creditCardModal, grandTotal } = state;
-
+    const [custmerData,setCustmerData] = React.useState({});
     const storeAddress = (addressData) => {
         setState({
             ...state,
@@ -176,6 +179,7 @@ function CheckoutScreen(props) {
                         discount: response.discountAMT,
                         shippingCharges: response.shipping,
                         sub_total: response.subTotal,
+                        selectedShipping: selectedShipping,
                         step: 2
                     });
                 }
@@ -210,8 +214,19 @@ function CheckoutScreen(props) {
         }
     }
 
-
+    useFocusEffect(
+        useCallback(() => {
+            async function getCustomerData() {
+                await AsyncStorage.getItem("CUSTOMER_DATA").then(data=>{
+                    setCustmerData(JSON.parse(data));
+                    
+                });
+            }
+            getCustomerData();
+        }, [])
+    )
     useEffect(() => {
+        
         getApi.getData(
             "user/getCheckoutData",
             props.AUTH_TOKEN
@@ -245,19 +260,66 @@ function CheckoutScreen(props) {
     logfunction("ADDRESS ", addresses.length)
 
     //place order
-    const placeOrder = () => {
+    const doPayment = () => {
+        
+        var options = {
+            description: 'UESI-TS App',
+            image: '../assets/uesi-ts-logo.png',
+            currency: 'INR',
+            key: 'rzp_live_8VfOQxZZPfUDVl', //'rzp_test_sczJuQC9MiEjRs',
+            amount: grandTotal*100,
+            name: 'UESI-TS',
+            order_id: '',//Replace this with an order_id created using Orders API.
+            prefill: {
+              email: custmerData.email,
+              contact: custmerData.telephone,
+              name: custmerData.firstname+' '+custmerData.lastname
+            },
+            theme: {color: '#53a20e'},
+            redirect: false,
+            config: {
+                display: {
+                  hide: [
+                  { method: 'paylater' },
+                  { method: 'emi' },
+                  //{ method: 'upi' },
+                  { method: 'wallet' }
+                ],
+                preferences: { show_default_blocks: true }
+                }
+              }
+          }
+          try{
+          RazorpayCheckout.open(options).then((data) => {
+            // handle success
+            
+            placeOrder(data);
+            //alert(`Success: ${data.razorpay_payment_id}`);
+          }).catch((error) => {
+            // handle failure
+            console.log(error);
+            alert(`Error: ${error.code} | ${error.description}`);
+          });
+        }catch(error){
+            console.log(error);
+        }
+    }
+
+    const placeOrder = (data) => {
+        
         logfunction("Place order here ", 'now');
-        if (selectedPaymentMethod != null) {
+        //if (selectedPaymentMethod != null) {
             setState({
                 ...state,
                 creditCardModal: false,
                 loading: true,
             });
             let sendData = new FormData();
-            sendData.append('payment_method', selectedPaymentMethod);
+            sendData.append('payment_method', 'online');
             sendData.append("comment", comment);
-            sendData.append('transaction_id', trx);
+            sendData.append('transaction_id', data.razorpay_payment_id);
             sendData.append('address_id', selctedAddress);
+            sendData.append('shipping_method', selectedShipping);
             logfunction("Params ", sendData);
 
             getApi.postData(
@@ -265,6 +327,7 @@ function CheckoutScreen(props) {
                 sendData,
                 props.AUTH_TOKEN
             ).then((response => {
+                
                 logfunction("RESPONSE ORDER  ", response)
                 if (response.status == 1) {
                     props.removeFromCart(0);
@@ -291,18 +354,18 @@ function CheckoutScreen(props) {
                     }, 3000);
                 }
             }));
-        }
-        else {
-            setState({
-                ...state,
-                loading: false,
-                message: 'Please select payment method!',
-            });
-            setShowLoading(true)
-            setTimeout(() => {
-                setShowLoading(false)
-            }, 3000);
-        }
+        //}
+        // else {
+        //     setState({
+        //         ...state,
+        //         loading: false,
+        //         message: 'Please select payment method!',
+        //     });
+        //     setShowLoading(true)
+        //     setTimeout(() => {
+        //         setShowLoading(false)
+        //     }, 3000);
+        // }
     }
 
     const _selectePaymentMethod = (payment) => {
@@ -331,12 +394,19 @@ function CheckoutScreen(props) {
 
     const payOnline = () => {
         //do online payment after credit card successs 
-        closeCrediCardModal();
-        setTimeout(() => {
-            placeOrder();
-        }, 200);
+        // Alert.alert('Important', "Don't use UPI payments like phonePe, GooglePay, Paytm, etc. Facing technical issues. You can use, Credit Card, Debit Card and Internet Banking.", [
+        //     {text: 'OK', onPress: () => okayPressed()},
+        //   ]);
+        doPayment();
+        
     }
-
+    // const okayPressed = ()=>{
+    //     closeCrediCardModal();
+    //     setTimeout(() => {
+    //         doPayment();
+    //         //placeOrder();
+    //     }, 200);
+    // }
     const closePay = (navigateTo) => {
         logfunction("Navigate To ", navigateTo)
         setState({
@@ -471,7 +541,8 @@ function CheckoutScreen(props) {
 
                 {/* Address Content start from here */}
                 <OtrixDivider size={"md"} />
-                <Text style={styles.deliveryTitle}>{strings.checkout.shipping_method}</Text>
+                <Text style={styles.deliveryTitle}>{strings.checkout.shipping_method}:</Text>
+                <Text style={styles.deliverySubTitle}>Books will deliver by postal service</Text>
                 <OtrixDivider size={"md"} />
                 {
                     shippingData.length > 0 &&
@@ -511,7 +582,7 @@ function CheckoutScreen(props) {
                      <View style={styles.offerView}>
                         <Text style={styles.offerTxt}>Get 10% Off With Credit Card</Text>
                     </View> */}
-                    <OtrixDivider size={"md"} />
+                    {/* <OtrixDivider size={"md"} />
                     <Text style={styles.paymentMethodTitle}>{strings.checkout.payment_methods}</Text>
                     <OtrixDivider size={"sm"} />
                     {
@@ -528,7 +599,7 @@ function CheckoutScreen(props) {
                                 }
                             </TouchableOpacity>
                         )
-                    }
+                    } */}
                 </View>
             }
             <OtrixDivider size={"md"} />
@@ -625,10 +696,10 @@ function CheckoutScreen(props) {
                 <PaymentSuccessComponent strings={strings} navigation={props.navigation} closePaymentModal={closePay} />
             </Modal>
 
-            <Modal visible={creditCardModal}
+            {/* <Modal visible={creditCardModal}
                 transparent={true}>
                 <CreditCartComponent closePayModal={() => closeCrediCardModal()} payWithCard={() => payOnline()} />
-            </Modal>
+            </Modal> */}
 
             {
                 showMessage == true && <OtrixAlert type={type} message={message} />
@@ -700,7 +771,7 @@ const styles = StyleSheet.create({
     emptyTxt: {
         fontSize: wp('6%'),
         marginVertical: hp('1.5%'),
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         color: Colors().secondry_text_color
     },
     indicatorView: {
@@ -736,20 +807,27 @@ const styles = StyleSheet.create({
         transform: [{ rotate: I18nManager.isRTL ? '310deg' : '45deg' }]
     },
     indicatorText: {
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         fontSize: wp('3.8%'),
         textTransform: 'uppercase',
         color: Colors().secondry_text_color
     },
     deliveryTitle: {
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         fontSize: wp('3.8%'),
         color: Colors().text_color,
         marginLeft: wp('5%'),
         textAlign: 'left'
     },
+    deliverySubTitle: {
+        fontFamily: Fonts.Font_Medium,
+        fontSize: wp('3%'),
+        color: Colors().text_color,
+        marginLeft: wp('5%'),
+        textAlign: 'left'
+    },
     summayTitle: {
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         fontSize: wp('3.8%'),
         color: Colors().text_color,
         left: wp('3%')
@@ -821,11 +899,11 @@ const styles = StyleSheet.create({
     },
     offerTxt: {
         fontSize: wp('3.8%'),
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         color: Colors().link_color
     },
     paymentMethodTitle: {
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         fontSize: wp('4%'),
         color: Colors().text_color,
         marginLeft: wp('1%')
@@ -842,7 +920,7 @@ const styles = StyleSheet.create({
         borderColor: Colors().light_gray
     },
     paymentMethodTxt: {
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         fontSize: wp('3.8%'),
         textAlign: 'left',
         marginLeft: wp('2%'),
@@ -878,18 +956,20 @@ const styles = StyleSheet.create({
     },
     shippingBox: {
         alignItems: 'center',
-        padding: wp('1%'),
+        //paddingTop: wp('1%'),
+        //paddingRight: wp('1%'),
+        //paddingBottom: wp('1%'),
         flexDirection: 'column'
     },
     shippingTxt: {
         fontSize: wp('3.5%'),
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         color: Colors().text_color,
         textAlign: 'center',
     },
     chargeTxt: {
         fontSize: wp('3.5%'),
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         color: Colors().link_color,
         textAlign: 'left',
     },

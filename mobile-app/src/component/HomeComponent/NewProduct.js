@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         alignItems: 'center',
         flexDirection: 'row',
-        marginTop: hp('1%')
+        marginTop: -10
     },
     catBox: {
         height: hp('12.5%'),

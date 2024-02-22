@@ -9,6 +9,7 @@ import SearchBar from './HomeComponent/SearchBar';
 import HomeCategoryView from './HomeComponent/HomeCategoryView';
 import CategoryView from './CategoryView';
 import HomeManufacturerView from './HomeComponent/HomeManufacturerView';
+import ManufacturersView from './ManufacturersView';
 import HomeBanners from './HomeComponent/HomeBanners';
 import NewProduct from './HomeComponent/NewProduct';
 import SimilarProduct from './ProductCompnent/SimilarProduct';
@@ -18,6 +19,8 @@ import DynamicProducts from './HomeComponent/DynamicProducts';
 import BestDeal from './HomeComponent/BestDeal';
 import OtrixLoader from './OtrixComponent/OtrixLoader';
 import OtirxBackButton from './OtrixComponent/OtirxBackButton';
+import OtirxHomeButton from './OtrixComponent/OtirxHomeButton';
+import OtirxMenuButton from './OtrixComponent/OtirxMenuButton';
 import OtrixAlert from './OtrixComponent/OtrixAlert';
 import FilterTags from './ProductCompnent/FilterTags';
 import ProductView from './ProductCompnent/ProductView';
@@ -32,7 +35,7 @@ import CheckoutView from './CartComponent/CheckoutView';
 import SearchProductsViewComponent from './SearchProductsViewComponent';
 import OrdersComponent from './CartComponent/OrdersComponent';
 import WishlistComponent from './WishlistComponent';
-import CreditCartComponent from './CartComponent/CreditCartComponent';
+//import CreditCartComponent from './CartComponent/CreditCartComponent';
 import PaymentSuccessComponent from './CartComponent/PaymentSuccessComponent';
 
 export {
@@ -48,6 +51,7 @@ export {
     HomeBanners,
     CategoryView,
     HomeManufacturerView,
+    ManufacturersView,
     NewProduct,
     DynamicProducts,
     SimilarProduct,
@@ -56,6 +60,8 @@ export {
     BestDeal,
     OtrixLoader,
     OtirxBackButton,
+    OtirxHomeButton,
+    OtirxMenuButton,
     OtrixAlert,
     FilterTags,
     ProductView,
@@ -70,6 +76,6 @@ export {
     SearchProductsViewComponent,
     OrdersComponent,
     WishlistComponent,
-    CreditCartComponent,
+    //CreditCartComponent,
     PaymentSuccessComponent
 }

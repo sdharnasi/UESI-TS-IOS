@@ -39,7 +39,7 @@ function CreditCartComponent(props) {
             <View style={styles.modelView}>
 
                 <View style={styles.contentView}>
-                    <TouchableOpacity style={[{ left: wp('80%'), bottom: hp('10%') }]} onPress={() => props.closePayModal(false)}>
+                    <TouchableOpacity style={[{ left: wp('80%'), bottom: hp('7%') }]} onPress={() => props.closePayModal(false)}>
                         <View style={styles.round} >
                             <Image source={close} style={styles.button} />
                         </View>
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     },
     paymentSuccess: {
         fontSize: wp('4.8%'),
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         textAlign: 'center'
     },
     checkImg: {

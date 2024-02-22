@@ -13,7 +13,9 @@ export const AppStyle =
 }
 export const currency = "₹";
 export const logo = require('../assets/images/logo.png')
-export const splashlogo = require('../assets/images/splash_logo.png')
+export const splashlogo = require('../assets/images/uesi-ts-logo.png');
+export const sidenavImage = require('../assets/images/sidenavImage.jpeg');
+export const homeScreen = '../assets/images/home_screen.jpeg';
 
 
 //bottom tab images
@@ -27,6 +29,11 @@ export const bottomProfile = require('../assets/images/bottomtab/Bottom_Profile.
 export const bottomProfileFill = require('../assets/images/bottomtab/Bottom_Profile_Fill.png')
 export const bottomSetting = require('../assets/images/bottomtab/Bottom_Setting.png')
 export const bottomSettingFill = require('../assets/images/bottomtab/Bottom_Setting_Fill.png')
+
+export const praise = require('../assets/images/bottomtab/Bottom_Setting.png')
+export const praiseFill = require('../assets/images/bottomtab/Bottom_Setting_Fill.png')
+export const prayer = require('../assets/images/bottomtab/Bottom_Setting.png')
+export const prayerFill = require('../assets/images/bottomtab/Bottom_Setting_Fill.png')
 
 //social images
 export const google = require('../assets/images/google.png');

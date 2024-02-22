@@ -6,7 +6,8 @@ import {
     I18nManager,
     Platform,
     StyleSheet,
-    Image
+    Image,
+    Alert
 } from "react-native";
 import { connect } from 'react-redux';
 import {
@@ -18,6 +19,7 @@ import { _roundDimensions } from '@helpers/util';
 import Fonts from "@helpers/Fonts";
 import FIcon from 'react-native-vector-icons/FontAwesome';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { logo } from '@common';
 import Rate, { AndroidMarket } from 'react-native-rate';
@@ -29,7 +31,7 @@ import RNRestart from 'react-native-restart';
 import { useEffect } from "react";
 const shareOptions = {
     title: 'Otrixapp',
-    url: Platform.OS == 'android' ? 'https://play.google.com/store/apps/details?id=com.otrixcommercelaravel' : 'iOS url',
+    url: Platform.OS == 'android' ? 'https://play.google.com/store/apps/details?id=com.uesits.geethavali' : 'iOS url',
 };
 
 function SettingScreen(props) {
@@ -37,10 +39,19 @@ function SettingScreen(props) {
 
 
     const [state, setState] = React.useState({ showRate: false, theme: null });
+    const [email, setEmail] = React.useState('')
 
 
     useEffect(async () => {
-        setState({ ...state, theme: await AsyncStorage.getItem('THEME') })
+        setState({ ...state, theme: await AsyncStorage.getItem('THEME') });
+        async function getCustomerData() {
+            await AsyncStorage.getItem("CUSTOMER_DATA").then(data=>{
+                
+                setEmail(data.email);
+            });
+        }
+        getCustomerData();
+
     }, [])
     const switchValue = (state.theme === 'dark' ? true : false);
     const toggleSwitch = async () => {
@@ -56,12 +67,17 @@ function SettingScreen(props) {
     const shareApp = () => {
         Share.open(shareOptions)
             .then((res) => {
-                console.log(res);
+                
             })
             .catch((err) => {
                 err && console.log(err);
             });
     }
+    const openDeleteAccountScreen = ()=>{
+        props.navigation.navigate('DeleteAccountScreen');
+    }
+    
+
     const { strings } = props;
     return (
         <OtrixContainer customStyles={{ backgroundColor: Colors().light_white }}>
@@ -170,14 +186,14 @@ function SettingScreen(props) {
                     onPress={() => {
                         const options = {
                             AppleAppID: "",
-                            GooglePackageName: "com.otrixcommercelaravel",
+                            GooglePackageName: "com.uesits.geethavali",
                             AmazonPackageName: "",
                             OtherAndroidURL: "",
                             preferredAndroidMarket: AndroidMarket.Google,
                             preferInApp: false,
                             inAppDelay: 5.0,
                             openAppStoreIfInAppFails: false,
-                            fallbackPlatformURL: "ms-windows-store:review?PFN:com.otrixcommercelaravel",
+                            fallbackPlatformURL: "ms-windows-store:review?PFN:com.uesits.geethavali",
                         }
                         Rate.rate(options, (success, errorMessage) => {
                             if (success) {
@@ -214,10 +230,22 @@ function SettingScreen(props) {
                     </View>
                 </TouchableOpacity>
 
+                <TouchableOpacity style={styles.listView} onPress={() => openDeleteAccountScreen()}>
+                    <View style={styles.leftSide}>
+                        <Fontisto name="locked" style={styles.icon} />
+                    </View>
+                    <View style={styles.center}>
+                        <Text style={styles.listTitle}>Deactivate Account</Text>
+                    </View>
+                    <View style={styles.rightSide}>
+                        <MatIcon name="arrow-forward-ios" style={[styles.rightIcon, { transform: [{ rotateY: I18nManager.isRTL == true ? '180deg' : '0deg' }] }]} />
+                    </View>
+                </TouchableOpacity>
+
             </OtrixContent>
 
             {/* <Text style={styles.bottomTxt}>Otrixapp</Text> */}
-            <Image source={logo} style={styles.bottomlogo} />
+            {/* <Image source={logo} style={styles.bottomlogo} /> */}
             <Text style={styles.bottomVersion}>Version: 1.0</Text>
             <OtrixDivider size={'lg'} />
         </OtrixContainer >
@@ -302,7 +330,7 @@ const styles = StyleSheet.create({
     },
     listTitle: {
         color: Colors().text_color,
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         fontSize: wp('3.8%'),
     },
     icon: {
@@ -323,7 +351,7 @@ const styles = StyleSheet.create({
     bottomVersion: {
         textAlign: 'center',
         fontSize: wp('2.5%'),
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         color: Colors().secondry_text_color,
     },
     bottomlogo: {

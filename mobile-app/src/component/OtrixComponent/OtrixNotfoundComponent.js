@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         color: Colors().secondry_text_color,
         marginTop: hp('4%'),
         fontSize: wp('4%'),
-        fontFamily: Fonts.Font_Semibold
+        fontFamily: Fonts.Font_Medium
     }
 
 });

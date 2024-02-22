@@ -148,7 +148,7 @@ function SocialRegisterScreen(props) {
             {/* Header */}
             <OtrixHeader customStyles={GlobalStyles.authHeader}>
                 <Text style={[GlobalStyles.authtabbarText]}>Register Account</Text>
-                <Text style={GlobalStyles.authSubText}>Create account to continue shopping with otrixweb</Text>
+                <Text style={GlobalStyles.authSubText}>Create account to continue shopping with UESITS</Text>
             </OtrixHeader>
             <OtrixDivider size={'md'} />
 
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     signupTxt: {
         fontSize: wp('3.5%'),
         textAlign: 'right',
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         color: Colors().link_color
     },
 });

@@ -20,6 +20,7 @@ function VerifyOTPScreen(props) {
 
 
     const verifyOTP = (otp) => {
+        console.log(otp);
         setData({
             ...formData,
             loading: true
@@ -33,6 +34,7 @@ function VerifyOTPScreen(props) {
                 'user/verifyOTP',
                 sendData,
             ).then((response => {
+                
                 logfunction("RESPONSE ", response)
                 if (response.status == 1) {
                     logfunction("RESPONSE ", 'Success')

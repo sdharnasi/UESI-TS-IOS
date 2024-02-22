@@ -19,14 +19,14 @@ export const GlobalStyles = StyleSheet.create({
   boxHeading: {
     flex: 0.50,
     fontSize: wp('4%'),
-    fontFamily: Fonts.Font_Semibold,
+    fontFamily: Fonts.Font_Medium,
     color: Colors().black,
     textAlign: 'left'
   },
   viewAll: {
     flex: 0.50,
     fontSize: wp('3.4%'),
-    fontFamily: Fonts.Font_Semibold,
+    fontFamily: Fonts.Font_Medium,
     textTransform: 'uppercase',
     color: Colors().link_color,
     textAlign: 'right',
@@ -51,7 +51,7 @@ export const GlobalStyles = StyleSheet.create({
   },
   outofstockTxt: {
     color: Colors().white,
-    fontFamily: Fonts.Font_Semibold,
+    fontFamily: Fonts.Font_Medium,
     fontSize: wp('2.6%'),
     textAlign: 'center',
   },
@@ -74,7 +74,7 @@ export const GlobalStyles = StyleSheet.create({
   },
   newTxt: {
     color: Colors().text_color,
-    fontFamily: Fonts.Font_Semibold,
+    fontFamily: Fonts.Font_Medium,
     fontSize: wp('2.8%'),
     textAlign: 'center',
   },
@@ -163,7 +163,7 @@ export const GlobalStyles = StyleSheet.create({
         ? wp('22%')
         : wp('15%'),
     flexDirection: 'row',
-    marginTop: hp('1%')
+    //marginTop: hp('1%')
   },
   tabbarText: {
     alignSelf: 'center',
@@ -398,6 +398,6 @@ export const GlobalStyles = StyleSheet.create({
     color: Colors().white,
     textAlign: 'center',
     fontSize: wp('3%'),
-    fontFamily: Fonts.Font_Semibold,
+    fontFamily: Fonts.Font_Medium,
   },
 });

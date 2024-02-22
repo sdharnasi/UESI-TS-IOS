@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
         color: Colors().text_color,
         textTransform: 'capitalize',
         fontSize: wp('4%'),
-        fontFamily: Fonts.Font_Semibold
+        fontFamily: Fonts.Font_Medium
     },
 
     colorBox: {

@@ -3,12 +3,12 @@ import Toast from 'react-native-root-toast';
 import AsyncStorage from '@react-native-community/async-storage'
 
 export function chatSupport() {
-    const link = 'whatsapp://send?text=Hello Otrixweb&phone=9898'
+    const link = 'whatsapp://send?text=Hello UESI-TS&phone=9898'
     Linking.canOpenURL(link)
         .then(supported => {
             if (!supported) {
                 Toast.show('Whatsapp not installed', {
-                    duration: 2000,
+                    duration: 5000,
                     position: Toast.positions.CENTER,
                     shadow: true,
                     animation: true,

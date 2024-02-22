@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     categoryName: {
         textAlign: 'center',
         fontSize: wp('4.5%'),
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         color: Colors().black
     }
 });

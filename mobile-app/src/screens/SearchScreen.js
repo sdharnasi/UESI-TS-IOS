@@ -80,15 +80,15 @@ function SearchScreen(props) {
                         variant="outline" placeholder={strings.homepage.placeholder_search}
                         style={[styles.textInputSearchStyle, { flex: 1 }]}
                         returnKeyType="search"
-                        value={searchKeyword}
-                        // onEndEditing={() => search()}
+                        //value={searchKeyword}
+                         //onEndEditing={() => search()}
                         onChangeText={(value) => { setState({ ...state, searchKeyword: value }), getData(value) }}
                     >
                     </Input>
                 </View>
             </View>
 
-            {
+            {/* {
                 showMost && <View style={styles.mostSearchView}>
                     <Text style={styles.title}>{strings.search.most_searchs}</Text>
                     <View style={styles.tagRow}>
@@ -102,7 +102,7 @@ function SearchScreen(props) {
                         }
                     </View>
                 </View>
-            }
+            } */}
 
             {
                 showSuggestions && data.length > 0 && <OtrixContent>
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     emptyTxt: {
         fontSize: wp('6%'),
         marginVertical: hp('1.5%'),
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         color: Colors().secondry_text_color
     },
     mostSearchView: {
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: wp('4%'),
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         color: Colors().text_color,
         textAlign: 'left'
     },
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     },
     tagText: {
         fontSize: wp('3.5%'),
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         color: Colors().secondry_text_color
     }
 });

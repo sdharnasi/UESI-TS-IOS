@@ -134,7 +134,7 @@ export default connect(mapStateToProps)(OrderScreen);
 const styles = StyleSheet.create({
 
     deliveryTitle: {
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         fontSize: wp('3.8%'),
         color: Colors().text_color,
         marginLeft: wp('5%')

@@ -13,12 +13,14 @@ const getDataService = {
             authHeader.append("Authorization", 'Bearer ' + token);
         }
         return new Promise((resolve, reject) => {
+            console.log(API_URL + url);
             fetch(API_URL + url, {
                 method: "GET",
                 headers: authHeader
             })
                 .then((response) => response.json())
                 .then((json) => {
+                    console.log(json);
                     if (json.status == 0 && json.message == 'unauthorize') {
                         RootNavigation.navigate('UnauthorizeScreen', {});
                     }

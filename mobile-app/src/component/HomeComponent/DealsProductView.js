@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     },
     productName: {
         color: Colors().secondry_text_color,
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         fontSize: wp('3.5%')
     },
     priceView: {
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
         flex: 0.30,
         textAlign: 'center',
         color: Colors().link_color,
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         fontSize: wp('2.2%'),
         textTransform: 'uppercase',
         borderRadius: 5

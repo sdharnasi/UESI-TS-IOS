@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     },
     paymentSuccess: {
         fontSize: wp('4.8%'),
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         textAlign: 'center'
     },
     checkImg: {

@@ -10,7 +10,7 @@ import {
     CartScreen, ProfileScreen, ProductListScreen, ProductDetailScreen, CheckoutScreen, EditProfileScreen, ChangePasswordScreen,
     ManageAddressScreen, WishlistScreen, OrderScreen, OrderDetailScreen, LanguageScreen, TermsandconditionScreen, PrivacyPolicyScreen,
     NotificationScreen, SearchScreen, UnauthorizeScreen, MenufecturerScreen, SocialRegisterScreen, RefundScreen, ShippingDeliveryScreen,
-    VerifyOTPScreen, ResetPasswordScreen
+    VerifyOTPScreen, ResetPasswordScreen, DeleteAccountScreen
 } from './screens/index';
 import { bottomHome, bottomHomeFill, bottomCategory, bottomCategoryFill, bottomCart, bottomProfile, bottomProfileFill, bottomSetting, bottomSettingFill } from '@common';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -19,10 +19,49 @@ import { Badge } from "native-base"
 import Fonts from './helpers/Fonts';
 import { _roundDimensions } from './helpers/util';
 import VerifyMobileOTPScreen from './screens/VerifyMobileOTPScreen';
+import store from './redux/store/store';
 const SettingStack = createStackNavigator();
 export const navigationRef = createNavigationContainerRef()
-let cartCount = 0;
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { bindActionCreators } from 'redux';
+import { addToWishList, storeFCM } from '@actions';
 
+import Home from './song-book/Home';
+import MessagesScreen from './screens/MessagesScreen';
+import CustomSidebarMenu from './CustomSidebarMenu';
+import TeluguSongsScreen from './song-book/TeluguSongsScreen';
+import EnglishSongsScreen from './song-book/EnglishSongsScreen';
+import HindiSongsScreen from './song-book/HindiSongsScreen';
+import SongSearchScreen from './song-book/SongSearchScreen';
+import NewSongsScreen from './song-book/NewSongsScreen';
+import SongRegisterScreen from './song-book/SongRegisterScreen';
+import PaymentScreen from './song-book/PaymentScreen';
+import UESIHomeScreen from './home/UESIHomeScreen';
+import UpComingProgramsScreen from './upcoming-programs/UpComingProgramsScreen';
+import MagazineScreen from './Velugu/MagazineScreen';
+import PrayerPointsScreen from './prayer-points/PrayerPointsScreen';
+import AudioSongsScreen from './audio-songs/AudioSongsScreen';
+import ShareScreen from './about-uesi/ShareScreen';
+import AboutUsScreen from './about-uesi/AboutUsScreen';
+import FeedbackScreen from './about-uesi/FeedbackScreen';
+import ContactUsScreen from './about-uesi/ContactUsScreen';
+import UESIPrivacyPolicyScreen from './about-uesi/UESIPrivacyPolicyScreen';
+import TermsAndConditionsScreen from './about-uesi/TermsAndConditionsScreen';
+import SubscriptionScreen from './Velugu/SubscriptionScreen';
+import CalendarScreen from './calendar/CalendarScreen';
+import PraisePointsScreen from './prayer-points/PraisePointsScreen';
+import PlaylistScreen from './audio-songs/PlaylistScreen';
+import DonateFreeWillScreen from './song-book/DonateFreeWillScreen';
+import DonationSuccessScreen from './song-book/DonationSuccessScreen';
+import Tricon2023Screen from './song-book/Tricon2023Screen';
+import Tricon2020Screen from './song-book/Tricon2020Screen';
+import VideoPlayerScreen from './song-book/VideoPlayerScreen';
+import TeachingTrainingScreen from './song-book/TeachingTrainingScreen';
+import SearchTheScriptureScreen from './song-book/SearchTheScriptureScreen';
+
+let cartCount = 0;
+let globalAuthStatus = false;
 export function navigate(name, params) {
     if (navigationRef.isReady()) {
         navigationRef.navigate(name, params);
@@ -51,8 +90,7 @@ function AuthNavigator() {
 
 const BottomTab = createMaterialBottomTabNavigator();
 function MyTabs(props) {
-    let cartCount = props.cartCounts;
-    let authStatus = props.auth;
+    const { cartCount, authStatus,USER_AUTH } = props;
     return (
         <BottomTab.Navigator
             initialRouteName="HomeScreen"
@@ -89,7 +127,7 @@ function MyTabs(props) {
                         />
                     ),
                 }} />
-            <BottomTab.Screen name="CartScreen" component={authStatus == true ? CartScreen : AuthNavigator} options={{ headerShown: false }}
+            <BottomTab.Screen name="CartScreen" component={globalAuthStatus == true ? CartScreen : AuthNavigator} options={{ headerShown: false }}
                 options={{
                     headerShown: false,
                     cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
@@ -122,7 +160,7 @@ function MyTabs(props) {
                         </View>
                     ),
                 }} />
-            <BottomTab.Screen name="ProfileScreen" component={authStatus == true ? ProfileScreen : AuthNavigator} options={{ headerShown: false }}
+            <BottomTab.Screen name="ProfileScreen" component={globalAuthStatus == true ? ProfileScreen : AuthNavigator} options={{ headerShown: false }}
                 options={{
                     headerShown: false,
                     cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
@@ -152,12 +190,463 @@ function MyTabs(props) {
     );
 }
 
+const PrayerPointsTab = createMaterialBottomTabNavigator();
+function PrayerPointsTabs(props) {
+    let cartCount = props.cartCounts;
+    let authStatus = props.auth;
+    return (
+        <PrayerPointsTab.Navigator
+            initialRouteName="PraisePointsScreen"
+            backBehavior={'order'}
+            labeled={false}
+            barStyle={styles.tabbarStyle}
+            screenOptions={{
+                // tabBarStyle: { position: 'absolute' },
+                unmountOnBlur: true,
+                tabBarShowLabel: false,
+                lazy: false,
+                // tabBarStyle: styles.tabbarStyle
+            }}>
+            <PrayerPointsTab.Screen name="PraisePointsScreen" component={PraisePointsScreen} options={{ headerShown: false }}
+                options={{
+                    headerShown: true,
+                    cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
+                    tabBarIcon: ({ focused, tintColor }) => (
+                        <Image
+                            square
+                            source={focused ? bottomHomeFill : bottomHome}
+                            style={[styles.bottomTabIcon]}
+                        />
+                    ),
+                }} />
+            <PrayerPointsTab.Screen name="PrayerPointsScreen" component={PrayerPointsScreen} options={{ headerShown: false }}
+                options={{
+                    headerShown: true,
+                    tabBarIcon: ({ focused, tintColor }) => (
+                        <Image
+                            square
+                            source={focused ? bottomCategoryFill : bottomCategory}
+                            style={[styles.bottomTabIcon]}
+                        />
+                    ),
+                }} />
+        </PrayerPointsTab.Navigator >
+    );
+}
 
+const Drawer = createDrawerNavigator();
+const DrawerNavigator = () => {
+    return (
+        <Drawer.Navigator screenOptions={{
+            itemStyle: {marginVertical: 5}
+          }}
+          drawerContent={props => <CustomSidebarMenu {...props} />}>
+        {/* <Drawer.Screen name="Songs Book" component={SongBookNavigator}/> */}
+        <Drawer.Screen name="UESIHomeScreen" component={UESIHomeScreen} options={{
+            headerShown: false,
+            drawerLabel: 'Home',
+            title: 'Home',
+            groupName: 'home',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            drawerKey:'home'
+          }}/>
+          <Drawer.Screen name="Upcoming Programs" component={UpComingProgramsScreen} options={{
+            drawerLabel: 'Upcoming Programs',
+            title: 'Upcoming Programs',
+            groupName: 'upcomming-programs',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            }
+          }}/>
+        <Drawer.Screen name="Telugu Songs" component={TeluguSongsScreen} options={{
+            drawerLabel: 'Telugu Songs',
+            title: 'Telugu Songs',
+            groupName: 'song-book',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
+              shadowColor: 'black',
+              shadowOpacity: 1,
+              shadowRadius: 3.84,
+              elevation: 15,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            drawerKey:'telugu'
+          }}/>
+        <Drawer.Screen name="English Songs" component={EnglishSongsScreen} options={{
+            drawerLabel: 'English Songs',
+            title: 'English Songs',
+            groupName: 'song-book',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            drawerKey:'english'
+          }}/>
+        <Drawer.Screen name="Hindi Songs" component={HindiSongsScreen} options={{
+            drawerLabel: 'Hindi Songs',
+            title: 'Hindi Songs',
+            groupName: 'song-book',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            drawerKey:'hindi'
+          }}/>
+          <Drawer.Screen name="New Songs" component={NewSongsScreen} options={{
+            drawerLabel: 'New Songs',
+            title: 'New Songs',
+            groupName: 'song-book',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            drawerKey:'new'
+          }}/>
+          {/* <Drawer.Screen name="Get all Songs" component={AuthNavigator} options={{
+            drawerLabel: 'Get all Songs',
+            title: 'Get all Songs',
+            groupName: 'song-book',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
+              shadowColor: 'black',
+              shadowOpacity: 1,
+              shadowRadius: 3.84,
+              elevation: 15,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            drawerKey:'get-all-songs'
+          }}/> */}
+        <Drawer.Screen name="Order Books" component={MyTabs}  options={{
+            headerShown: false,
+            drawerLabel: 'Order Books',
+            title: 'Order Books',
+            groupName: 'book-store',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+          }}/>
+        <Drawer.Screen name="TRICON-2023" component={Tricon2023Screen} options={{
+            drawerLabel: 'TRICON-2023',
+            title: 'TRICON-2023',
+            groupName: 'tricon',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
+              shadowColor: 'black',
+              shadowOpacity: 1,
+              shadowRadius: 3.84,
+              elevation: 15,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            drawerKey:'tricon-2023'
+          }}/>
+          <Drawer.Screen name="TRICON-2020" component={Tricon2020Screen} options={{
+            drawerLabel: 'TRICON-2020',
+            title: 'TRICON-2020',
+            groupName: 'tricon',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
+              shadowColor: 'black',
+              shadowOpacity: 1,
+              shadowRadius: 3.84,
+              elevation: 15,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            drawerKey:'tricon-2020'
+          }}/>
+          <Drawer.Screen name="DFDProgramsScreen" component={TeachingTrainingScreen} options={{
+            drawerLabel: 'Teaching & Training',
+            title: 'Teaching & Training',
+            groupName: 'dfd-programs',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
+              shadowColor: 'black',
+              shadowOpacity: 1,
+              shadowRadius: 3.84,
+              elevation: 15,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            drawerKey:'dfd-programs'
+          }}/>
+        <Drawer.Screen name="Vidyarthi Velugu" component={MagazineScreen}  options={{
+            drawerLabel: 'Vidyarthi Velugu',
+            title: 'Vidyarthi Velugu',
+            groupName: 'magazines',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            drawerKey:'vidyarthi-velugu'
+          }}/>
+
+        <Drawer.Screen name="Campus Connect" component={MagazineScreen}  options={{
+            drawerLabel: 'Campus Connect',
+            title: 'Campus Connect',
+            groupName: 'magazines',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            drawerKey:'campus-connect'
+          }}/>
+          <Drawer.Screen name="In Touch" component={MagazineScreen}  options={{
+            drawerLabel: 'In Touch',
+            title: 'In Touch',
+            groupName: 'magazines',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            drawerKey:'in-touch'
+          }}/>
+          {/* <Drawer.Screen name="Our Field" component={MagazineScreen}  options={{
+            drawerLabel: 'Our Field',
+            title: 'Our Field',
+            groupName: 'magazines',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            drawerKey:'our-field'
+          }}/> */}
+          <Drawer.Screen name="subscription" component={SubscriptionScreen}  options={{
+            drawerLabel: 'Subscriptions',
+            title: 'Subscriptions',
+            groupName: 'magazines',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            drawerKey:'subscription'
+          }}/>
+        <Drawer.Screen name="Calendar" component={CalendarScreen}  options={{
+            drawerLabel: 'Calendar',
+            title: 'Calendar',
+            groupName: 'calendar',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+          }}/>
+          <Drawer.Screen name="DonateFreeWillScreen" component={DonateFreeWillScreen}  options={{
+            drawerLabel: 'Donate a Gift',
+            title: 'Donate a Gift',
+            groupName: 'donate-free-will',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+          }}/>
+        {/* <Drawer.Screen name="Prayer Points" component={PrayerPointsScreen}  options={{
+            drawerLabel: 'Prayer Points',
+            title: 'Prayer Points',
+            groupName: 'prayer-points',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+          }}/> */}
+          <Drawer.Screen name="Audio Songs" component={AudioSongsScreen}  options={{
+            drawerLabel: 'Audio Songs',
+            title: 'Audio Songs',
+            groupName: 'audio-songs',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+          }}/>
+
+          <Drawer.Screen name="SearchTheScriptureScreen" component={SearchTheScriptureScreen}  options={{
+            drawerLabel: 'Search the Scriptures',
+            title: 'Search the Scriptures',
+            groupName: 'search-the-scripture',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+          }}/>
+
+          <Drawer.Screen name="Login" component={AuthNavigator}  options={{
+            drawerLabel: 'Login',
+            title: 'Login',
+            groupName: 'login',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+          }}/>
+          <Drawer.Screen name="Share App" component={ShareScreen}  options={{
+            drawerLabel: 'Share App',
+            title: 'Share App',
+            groupName: 'share-app',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+          }}/>
+          <Drawer.Screen name="About Us" component={AboutUsScreen}  options={{
+            drawerLabel: 'About Us',
+            title: 'About Us',
+            groupName: 'about-us',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+          }}/>
+          <Drawer.Screen name="Send Complaints" component={FeedbackScreen}  options={{
+            drawerLabel: 'Send Complaints',
+            title: 'Complaints',
+            groupName: 'feedback',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+          }}/>
+          <Drawer.Screen name="Contact Us" component={ContactUsScreen}  options={{
+            drawerLabel: 'Contact Us',
+            title: 'Contact Us',
+            groupName: 'contact-us',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+          }}/>
+          <Drawer.Screen name="Terms and Conditions" component={TermsAndConditionsScreen}  options={{
+            drawerLabel: 'Terms and Conditions',
+            title: 'Terms and Conditions',
+            groupName: 'terms-and-conditions',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+          }}/>
+          <Drawer.Screen name="Privacy Policy" component={UESIPrivacyPolicyScreen}  options={{
+            drawerLabel: 'Privacy Policy',
+            title: 'Privacy Policy',
+            groupName: 'privacy-policy',
+            headerStyle: {
+                backgroundColor: Colors().themeColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+          }}/>
+      </Drawer.Navigator>
+      
+    );
+  }
 
 
 const Stack = createStackNavigator();
 function AppNavigator(props) {
     const { cartCount, authStatus } = props;
+    globalAuthStatus = authStatus;
     return (
         <NavigationContainer ref={navigationRef}>
             <Stack.Navigator initialRouteName="SplashScreen">
@@ -169,9 +658,75 @@ function AppNavigator(props) {
                 {/* <Stack.Screen {...props} name="MainScreen" component={() => <MyTabs cartCounts={cartCount} auth={authStatus}></MyTabs>} options={{ headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, }} countProp={cartCount} initialParams={{ 'count': cartCount }} /> */}
 
                 <Stack.Screen {...props} name="MainScreen" options={{ headerShown: false, }} >
-                    {props => <MyTabs cartCounts={cartCount} auth={authStatus} />}
+                    {props => <DrawerNavigator cartCounts={cartCount} auth={authStatus} />}
                 </Stack.Screen>
-
+                <Stack.Screen name="Home" component={Home} options={({ navigation, route }) =>({
+                    headerShown: true,
+                    headerStyle: {
+                        backgroundColor: Colors().themeColor,
+                    },
+                    headerTintColor: '#fff',
+                    headerTitle: props.songType==='telugu'?'Telugu Songs':(props.songType==='english'?'English Songs':(props.songType==='hindi'?'Hindi Songs':'New Songs')),
+                    headerTitleStyle: {
+                        fontWeight: 'bold',
+                    }
+                })} />
+                <Stack.Screen name="VideoPlayerScreen" component={VideoPlayerScreen} options={({ navigation, route }) =>({
+                    headerShown: false,
+                    headerStyle: {
+                        backgroundColor: Colors().themeColor,
+                    },
+                    headerTintColor: '#fff',
+                    headerTitle: 'TRICON-2023',
+                    headerTitleStyle: {
+                        fontWeight: 'bold',
+                    }
+                })} />
+                <Stack.Screen name="SongSearchScreen" component={SongSearchScreen} options={{
+                    headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS
+                }} />
+                <Stack.Screen name="PlaylistScreen" component={PlaylistScreen} options={{
+                    headerShown: true,
+                    cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+                    headerStyle: {
+                        backgroundColor: Colors().themeColor,
+                    },
+                    headerTintColor: '#fff',
+                    headerTitle: 'Play List',
+                    headerTitleStyle: {
+                        fontWeight: 'bold',
+                    }
+                }} />
+                <Stack.Screen name="SongRegisterScreen" component={SongRegisterScreen} options={{
+                    headerShown: false
+                }} />
+                <Stack.Screen name="PaymentScreen" component={PaymentScreen} options={{
+                    headerShown: true,
+                    headerShown: true,
+                    headerStyle: {
+                        backgroundColor: Colors().themeColor,
+                    },
+                    headerTintColor: '#fff',
+                    headerTitle: props.paymentModuleType=='song_book'?'Get all songs':'Get all videos',
+                    headerTitleStyle: {
+                        fontWeight: 'bold',
+                    }
+                }} />
+                <Stack.Screen name="DeleteAccountScreen" component={DeleteAccountScreen} options={{
+                    headerShown: true,
+                    headerShown: true,
+                    headerStyle: {
+                        backgroundColor: Colors().themeColor,
+                    },
+                    headerTintColor: '#fff',
+                    headerTitle: 'Delete Account',
+                    headerTitleStyle: {
+                        fontWeight: 'bold',
+                    }
+                }} />
+                <Stack.Screen name="DonationSuccessScreen" component={DonationSuccessScreen} options={{
+                    headerShown: false
+                }} />
                 <Stack.Screen name="LoginScreen" component={AuthNavigator} options={{ headerShown: false, }} />
                 <Stack.Screen name="ProductListScreen" component={ProductListScreen} options={{ headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, }} />
                 <Stack.Screen name="ProductDetailScreen" component={ProductDetailScreen} options={{ headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, }} />
@@ -239,7 +794,7 @@ function AppNavigator(props) {
                 <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} options={{
                     headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                 }} />
-
+                
 
             </Stack.Navigator>
 
@@ -248,15 +803,28 @@ function AppNavigator(props) {
     )
 }
 
+
+//export default connect(mapStateToProps, {})(AppNavigator);
+
 function mapStateToProps(state) {
     return {
         cartCount: state.cart.cartCount ? state.cart.cartCount : null,
-        authStatus: state.auth.USER_AUTH
+        authStatus: state.auth.USER_AUTH,
+        songType: state.song.songType,
+        USER_AUTH: state.auth.USER_AUTH,
+        paymentModuleType: state.song.paymentModuleType
     }
 }
 
-export default connect(mapStateToProps, {})(AppNavigator);
+const mapDispatchToProps = dispatch => (
+    bindActionCreators({
+        addToWishList,
+        storeFCM
+    }, dispatch)
+);
 
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppNavigator);
 
 const styles = StyleSheet.create({
     bottomTabIcon: {

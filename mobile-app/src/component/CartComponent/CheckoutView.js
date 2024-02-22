@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     quantityTxt: {
         fontSize: wp('3.5%'),
         color: Colors().text_color,
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         textAlign: 'center',
     },
     deleteIcon: {

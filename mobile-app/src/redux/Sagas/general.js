@@ -187,12 +187,23 @@ function* addToWishlist(action) {
 }
 
 function* doLogin(action) {
+    console.log("action");
+    console.log(action);
     try {
-        const { data: { authToken, status, cartCount, wishlistData, data }, navigateTo } = action.payload;
-
+        
+        const { data: { authToken, status, cartCount, wishlistData,userAccess, data }, navigateTo } = action.payload;
+        
         if (status) {
             yield put(authData(data));
             AsyncStorage.setItem('IS_AUTH', '1');
+            let user_access = {};
+            if(action.payload.data.userAccess && action.payload.data.userAccess.length>0){
+                action.payload.data.userAccess.map((access,index)=>{
+                    user_access[access.module_type] = access.status;
+                });
+            }
+            AsyncStorage.setItem('USER_ACCESS', JSON.stringify(user_access));
+            console.log(data);
             AsyncStorage.setItem('CUSTOMER_DATA', JSON.stringify(data));
             AsyncStorage.setItem('AUTH_TOKEN', authToken);
             let storeArr = { totalCount: cartCount };
@@ -205,7 +216,10 @@ function* doLogin(action) {
                 yield put(successWishlist(wishData));
             }
             yield put(authStatus(true, authToken));
-            RootNavigation.navigate(navigateTo, {});
+            if(navigateTo && navigateTo!=''){
+                RootNavigation.navigate(navigateTo, {});
+            }
+            
         }
         else {
             yield put(authStatus(false));
@@ -221,6 +235,10 @@ function* doLogout(action) {
         const { payload } = action;
         AsyncStorage.removeItem('IS_AUTH');
         AsyncStorage.removeItem('CUSTOMER_DATA');
+        AsyncStorage.removeItem('USER_ACCESS');
+        AsyncStorage.removeItem('TOTAL_SONGS');
+        AsyncStorage.removeItem('songs_donated');
+        AsyncStorage.removeItem('SONG_UPDATE_VERSION');
         yield put(authStatus(false));
         let wishData = { totalCount: 0, wishlistData: [] };
         AsyncStorage.removeItem('GET_LOCAL_WISHLIST');
@@ -230,7 +248,6 @@ function* doLogout(action) {
         yield put(successCart(storeArr));
         RootNavigation.navigate('HomeScreen');
         yield put(authData(null));
-
     } catch (e) {
         logfunction('ERROR =', e)
     }

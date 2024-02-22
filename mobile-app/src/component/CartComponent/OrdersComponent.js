@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, Platform, Modal, I18nManager, Image, Pressable } from 'react-native';
+import { View, StyleSheet, Text, Platform, Modal, I18nManager, Image, Pressable,Clipboard, Alert,Linking } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { OtrixDivider } from '@component';
 import Fonts from '@helpers/Fonts';
@@ -12,13 +12,52 @@ import moment from 'moment';
 import { close } from '@common';
 import { _roundDimensions } from '@helpers/util';
 import { numberWithComma } from '@helpers/FunctionHelper';
+//import { InAppBrowser } from 'react-native-inappbrowser-reborn';
+import { Snackbar } from 'react-native-paper';
 
 function OrdersComponent(props) {
     const [buyAgainPop, setBuyAgain] = React.useState(false);
+    const [visible, setVisible] = React.useState(false);
+    
+    
+    const copyToClipboard = (order) => {
+        if(order.order_track_id && order.order_track_id!=''){
+            Clipboard.setString(order.order_track_id);
+            let message = 'Tacking Id - '+order.order_track_id+' is coppied, Paste the tracking id in the next window';
+            Alert.alert('', message, [
+                {text: 'OK', onPress: () => trackOrder()},
+            ]);
+        }else{
+            Alert.alert('', 'Your order not posted, Kindly give few hours to post.', [
+                {text: 'OK', onPress: () => okayPressed()},
+            ]);
+        }
+        
+      };
+      const okayPressed = () =>{
+
+      }
+    const onToggleSnackBar = () => setVisible(!visible);
+
+  const onDismissSnackBar = () => setVisible(false);
 
     let item = props.orders;
     const { strings } = props;
 
+    const sleep = async () => {
+        return new Promise(resolve => setTimeout(resolve, timeout))
+      }
+
+    const trackOrder = async () => {
+       // onToggleSnackBar();
+        const url = 'https://www.indiapost.gov.in/_layouts/15/DOP.Portal.Tracking/TrackConsignment.aspx';
+            try {
+                Linking.openURL(url)
+              } catch (error) {
+                //Alert.alert(error.message)
+              }
+         
+    }
     const buyAgain = () => {
 
         if (item.products.length > 1) {
@@ -33,8 +72,9 @@ function OrdersComponent(props) {
     return (
         <>
             <OtrixDivider size={'md'} />
-
+            
             <View style={styles.cartContent} key={item.id}>
+            
                 <View style={styles.cartBox} >
                     <View style={styles.imageView}>
                         <FastImage
@@ -62,6 +102,17 @@ function OrdersComponent(props) {
                 <Text style={styles.bottomLeftTxt}>{strings.orders.buy_again}</Text>
                 <Icon name="arrow-forward-ios" style={{ transform: [{ rotateY: I18nManager.isRTL == true ? '180deg' : '0deg' }] }} ></Icon>
             </TouchableOpacity>
+            <>
+            <View style={GlobalStyles.horizontalLine}></View>
+            {/* {item.shipping_method==='2'?(<TouchableOpacity onPress={() => copyToClipboard()} style={styles.bottomButton}>
+                <Text style={styles.bottomLeftTxt}>Track Order</Text>
+                <Icon name="arrow-forward-ios" style={{ transform: [{ rotateY: I18nManager.isRTL == true ? '180deg' : '0deg' }] }} ></Icon>
+            </TouchableOpacity>):null} */}
+            <TouchableOpacity onPress={() => copyToClipboard(item)} style={styles.bottomButton}>
+                <Text style={styles.bottomLeftTxt}>Track Order</Text>
+                <Icon name="arrow-forward-ios" style={{ transform: [{ rotateY: I18nManager.isRTL == true ? '180deg' : '0deg' }] }} ></Icon>
+            </TouchableOpacity>
+            </>
             <View style={GlobalStyles.horizontalLine}></View>
             <TouchableOpacity onPress={() => props.navigation.navigate('OrderDetailScreen', { orderData: item })} style={[styles.bottomButton, { marginBottom: hp('2%') }]}>
                 <Text style={styles.bottomLeftTxt}>{strings.orders.order_detail}</Text>
@@ -132,7 +183,7 @@ function OrdersComponent(props) {
                             </ScrollView>
                         </View>
                     </View>
-
+               
                 </View>
             </Modal >
 
@@ -242,6 +293,6 @@ const styles = StyleSheet.create({
     price: {
         color: Colors().link_color,
         fontSize: wp('4%'),
-        fontFamily: Fonts.Font_Semibold
+        fontFamily: Fonts.Font_Medium
     },
 });

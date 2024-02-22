@@ -11,6 +11,7 @@ export function Colors() {
   let blackTxt = '#000000';
   let lightWhiteTxt = '#FAFAFA';
   let textColor = "#121533";
+  let headerColor = "#303c7e";
 
   // if (theme == 'dark') {
   //   white = '#000';
@@ -23,13 +24,16 @@ export function Colors() {
   // }
 
   return {
+    themeColor: "#303c7e",
+    themeSecondColor: '#ff033e',
+    themeThirdColor:'',
     light_white: lightWhite,
     custom_gray: 'rgb(182,182,182)',
     custom_purple: 'rgba(255, 229, 0, 1)',
     text_color: textColor,
     secondry_text_color: '#767787',
     link_color: '#626ABB',
-    themeColor: "#626ABB",
+    tabHeilightColor:'#7e3062',
     red: '#ff4848',
     success: '#00A36C',
     arrow_color: 'rgb(200,204,216)',
@@ -59,5 +63,6 @@ export function Colors() {
     silverBackground: '#77e319',
     themeYellow: '#6dba2b',
     inactiveTabColor: '#ffffff70',
+    headerColor:headerColor
   }
 };

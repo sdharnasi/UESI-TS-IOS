@@ -78,8 +78,9 @@ function ResetPasswordScreen(props) {
                         });
                         setShowLoading(true)
                         setTimeout(() => {
-                            setShowLoading(false)
-                        }, 1500);
+                            setShowLoading(false);
+                            props.navigation.navigate('LoginScreen');
+                        }, 3000);
                     }
                     else {
                         setData({
@@ -90,7 +91,8 @@ function ResetPasswordScreen(props) {
                         });
                         setShowLoading(true)
                         setTimeout(() => {
-                            setShowLoading(false)
+                            setShowLoading(false);
+
                         }, 3000);
                     }
                 }));

@@ -5,7 +5,7 @@
     "placeholder_first_name": "First Name",
     "placeholder_last_name": "Last Name",
     "placeholder_confirm_password": "Confirm Password",
-    "placeholder_phone": "Mobile Number",
+    "placeholder_phone": "10 digit Mobile Number",
     "select_country": "Select Country",
     "city": "City",
     "address_1": "Address 1",
@@ -16,7 +16,7 @@
   "common": {
     "label_new": "New",
     "label_out_of_stock": "Out Of Stock",
-    "product_not_found": "Product not found!"
+    "product_not_found": "Book not found!"
   },
   "filter": {
     "title": "Filter",
@@ -35,7 +35,7 @@
   },
   "registration": {
     "title": "Register Account",
-    "subtitle": "Create account to continue shopping with otrixweb",
+    "subtitle": "Create account to continue shopping with UESI-TS",
     "button_register": "Register Now",
     "label_login_info": "Already have an Account?",
     "button_login": "Sign In"
@@ -58,19 +58,19 @@
     "cms_list": "Blogs"
   },
   "homepage": {
-    "placeholder_search": "Search Product",
+    "placeholder_search": "Search Book",
     "label_category": "Top Categories",
     "viewall": "View All",
-    "label_new_product": "New Product",
-    "label_shop_by_brands": "Shop By Brands",
+    "label_new_product": "New Books",
+    "label_shop_by_brands": "Published By",
     "label_dod": "Deals of the day",
-    "label_tranding": "Tranding Product"
+    "label_tranding": "Trending Books"
   },
   "categories": {
     "title": "Categories"
   },
   "brands": {
-    "title": "Brands"
+    "title": "Published By"
   },
   "account": {
     "title": "My Profile",
@@ -89,7 +89,7 @@
     "privacy_policy": "Privacy Policy",
     "return_refund": "Return & Refund Policy",
     "shipping_delivery": "Shipping & Delivery Policy",
-    "rate_app": "Rate Otrixapp",
+    "rate_app": "Rate This App",
     "share_app": "Share This App",
     "dark_mode": "Dark Mode"
   },
@@ -114,15 +114,15 @@
     "order": "Order",
     "order_total": "Order Total",
     "shipping_address": "Shipping Address",
-    "order_product_list": "Order Product List",
+    "order_product_list": "Order Books List",
     "quantity": "Quantity",
-    "rate_this_product": "Rate This Product",
+    "rate_this_product": "Rate This Book",
     "order_summary": "Order Summary",
     "items_count": "Items Count",
     "tax": "Tax",
     "discount": "Discount",
     "shipping_charge": "Shipping Charge",
-    "rate_product_now": "Rate Product Now!",
+    "rate_product_now": "Rate Book Now!",
     "rate_text": "Rate Text",
     "submit": "Submit",
     "cancel_order": "Cancel Order",
@@ -151,7 +151,7 @@
     "avg": "Average",
     "poor": "Poor",
     "very_bad": "Very Bad",
-    "similar": "Similar Products",
+    "similar": "Similar Books",
     "add_to_cart": "Add to cart"
   },
   "cart": {

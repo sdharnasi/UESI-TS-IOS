@@ -29,6 +29,11 @@ import { ASSETS_DIR } from '@env';
 import { logfunction } from "@helpers/FunctionHelper";
 import AsyncStorage from '@react-native-community/async-storage'
 import auth from '@react-native-firebase/auth';
+import {
+    GoogleSignin,
+    GoogleSigninButton,
+    statusCodes
+} from '@react-native-google-signin/google-signin';
 
 function ProfileScreen(props) {
     const [state, setState] = React.useState({ profileImage: null, profileImageURL: null, type: 'error', message: null });
@@ -49,7 +54,14 @@ function ProfileScreen(props) {
             profileImageURL: image
         })
     }, [profileImage]);
-
+    signOut = async () => {
+        try {
+          await GoogleSignin.signOut();
+          setState({ user: null }); // Remember to remove the user from your app's state as well
+        } catch (error) {
+          console.error(error);
+        }
+      };
     const openImagePicker = async (res) => {
         let mainImage = {
             uri: res.assets[0].uri,
@@ -188,7 +200,7 @@ function ProfileScreen(props) {
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.listView} onPress={() => props.navigation.navigate('ChangePasswordScreen')}>
+                {/* <TouchableOpacity style={styles.listView} onPress={() => props.navigation.navigate('ChangePasswordScreen')}>
                     <View style={styles.leftSide}>
                         <Fontisto name="locked" style={styles.icon} />
                     </View>
@@ -198,7 +210,7 @@ function ProfileScreen(props) {
                     <View style={styles.rightSide}>
                         <MatIcon name="arrow-forward-ios" style={[styles.rightIcon, { transform: [{ rotateY: I18nManager.isRTL == true ? '180deg' : '0deg' }] }]} />
                     </View>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <TouchableOpacity style={styles.listView} onPress={() => {
 
@@ -209,8 +221,9 @@ function ProfileScreen(props) {
                             props.AUTH_TOKEN
                         ).then((response => {
                         })),
+                        signOut();
                         Toast.show('Successfully Logout', {
-                            duration: 2000,
+                            duration: 5000,
                             position: Toast.positions.CENTER,
                             shadow: true,
                             animation: true,
@@ -338,7 +351,7 @@ const styles = StyleSheet.create({
     },
     listTitle: {
         color: Colors().text_color,
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         fontSize: wp('3.8%'),
     },
     icon: {

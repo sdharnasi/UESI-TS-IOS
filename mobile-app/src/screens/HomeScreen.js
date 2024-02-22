@@ -28,6 +28,7 @@ import { ASSETS_DIR } from "@env";
 import AsyncStorage from '@react-native-community/async-storage'
 import messaging from '@react-native-firebase/messaging';
 import firebase from '@react-native-firebase/app';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 function HomeScreen(props) {
     const [state, setState] = React.useState({ homePageData: [], loading: true, profileImageURL: null });
@@ -262,17 +263,20 @@ function HomeScreen(props) {
 
     const { homePageData, loading } = state;
     const { USER_AUTH, wishlistData, customerData, wishlistCount, strings } = props;
+    console.log("4 "+USER_AUTH);
     logfunction("profile Image ", customerData)
     logfunction("wishlistData wishlistData ", wishlistData)
-
+    const searchBook = () => {
+        props.navigation.navigate('SearchScreen');  
+      }
 
     return (
 
         <OtrixContainer customStyles={{ backgroundColor: Colors().white }}>
 
             {/* Header */}
-            <OtrixHeader customStyles={{ backgroundColor: Colors().white }}>
-                <TouchableOpacity style={styles.headerLeft} onPress={() => props.navigation.navigate('ProfileScreen')}>
+            <OtrixHeader customStyles={{ backgroundColor: Colors().headerColor }}>
+                {/* <TouchableOpacity style={styles.headerLeft} onPress={() => props.navigation.navigate('ProfileScreen')}>
                     {
                         USER_AUTH ? customerData.creation == 'D' ?
                             customerData.image != null ?
@@ -303,14 +307,22 @@ function HomeScreen(props) {
                             >
                             </Image>
                     }
+                </TouchableOpacity> */}
+                <TouchableOpacity style={{position:'absolute',top:10,zIndex:9,left:10}} onPress={() => props.navigation.toggleDrawer()}>
+                    <OtirxMenuButton />
                 </TouchableOpacity>
                 <View style={styles.headerCenter}>
-                    <Text style={styles.headingTxt}>Otrixweb</Text>
+                    <Text style={styles.headingTxt}>Order Books</Text>
                 </View>
+                
                 {
                     loading && <View style={{ flex: 0.10 }} />
                 }
-
+                <View>
+                <TouchableOpacity style={[{ flex: 0, marginRight:20 }]} onPress={() => searchBook()}>
+                    <Ionicons name='search-sharp' size={25} color="#ffffff" />
+                </TouchableOpacity>
+                </View>
                 {
                     !loading &&
                     <TouchableOpacity style={styles.headerRight} onPress={() => { USER_AUTH ? props.navigation.navigate('WishlistScreen') : props.navigation.navigate('LoginScreen') }}>
@@ -322,10 +334,11 @@ function HomeScreen(props) {
                                 width: wishlistCount > 9 ? _roundDimensions()._height * 0.038 : _roundDimensions()._height * 0.032,
                                 borderRadius: _roundDimensions()._borderRadius,
                                 right: wishlistCount > 9 ? -wp('0.6%') : wp('0.2%'),
-                                top: wishlistCount > 9 ? -hp('0.5%') : hp('0.1%')
+                                top: wishlistCount > 9 ? -hp('0.5%') : hp('0.1%'),
+                                backgroundColor:'#fff'
                             }]}>
 
-                                <Text style={[GlobalStyles.badgeText, styles.countText, { fontSize: wishlistCount > 9 ? wp('2.2%') : wp('3%') }]}>{wishlistCount}</Text>
+                                <Text style={[GlobalStyles.badgeText, styles.countText, { fontSize: wishlistCount > 9 ? wp('2.2%') : wp('3%'),color:'red'}]}>{wishlistCount}</Text>
                             </Badge>
                         }
 
@@ -334,51 +347,56 @@ function HomeScreen(props) {
 
 
             </OtrixHeader>
+            {/* <OtrixDivider size={'md'} /> */}
 
             <OtrixContent>
                 {
                     homePageStoredData ? <>
                         {/* SearchBar Component */}
-                        < SearchBar navigation={props.navigation} strings={strings} />
+                        {/* < SearchBar navigation={props.navigation} strings={strings} /> */}
 
                         {/* HomeCategoryView Component */}
                         <HomeCategoryView navigation={props.navigation} data={homePageStoredData.categories} strings={strings} />
 
                         {/* HomeSlider Component */}
-                        <HomeSlider data={homePageStoredData.homepageSlider} navigation={props.navigation} />
-                        <OtrixDivider size={'md'} />
+                        {/* <HomeSlider data={homePageStoredData.homepageSlider} navigation={props.navigation} />
+                        <OtrixDivider size={'md'} /> */}
 
                         {/* NewProduct Component */}
                         <NewProduct navigation={props.navigation} strings={strings} wishlistArr={wishlistData} data={homePageStoredData.newProducts.length > 0 ? homePageStoredData.newProducts.slice(0, 4) : []} arr={homePageStoredData.newProducts} addToWishlist={addToWish} userAuth={props.USER_AUTH} />
 
                         {/* Homepage banners */}
-                        {
+                        {/* {
                             homePageStoredData.banners?.images.length > 0 && homePageStoredData.banners?.images[0] &&
                             <HomeBanners image={homePageStoredData.banners?.images[0].image} link={homePageStoredData.banners?.images[0]} />
-                        }
+                        } */}
 
                         {/* BestDeal Component */}
-                        <BestDeal navigation={props.navigation} strings={strings} data={homePageStoredData.dodProducts.length > 0 ? homePageStoredData.dodProducts.slice(0, 4) : []} arr={homePageStoredData.dodProducts} wishlistArr={wishlistData} addToWishlist={addToWish} userAuth={props.USER_AUTH} />
-                        <OtrixDivider size={'sm'} />
+                        {/* <BestDeal navigation={props.navigation} strings={strings} data={homePageStoredData.dodProducts.length > 0 ? homePageStoredData.dodProducts.slice(0, 4) : []} arr={homePageStoredData.dodProducts} wishlistArr={wishlistData} addToWishlist={addToWish} userAuth={props.USER_AUTH} /> */}
+                        {/* <OtrixDivider size={'sm'} /> */}
                         {/* Homepage banners */}
-                        {
+                        {/* {
                             homePageStoredData.banners?.images.length > 0 && homePageStoredData.banners?.images[1] &&
                             <HomeBanners image={homePageStoredData.banners?.images[1].image} link={homePageStoredData.banners?.images[1]} />
-                        }
+                        } */}
                     </> : <View style={{ flex: 1 }}>
                         <HomeSkeleton />
                     </View>
                 }
-
+                
                 <OtrixDivider size={'sm'} />
                 {
                     loading ? <ProductSkeleton /> : <>
                         {/* TrendingProduct Component */}
                         <TrendingProduct navigation={props.navigation} strings={strings} data={homePageData.trendingProducts.length > 0 ? homePageData.trendingProducts.slice(0, 4) : []} arr={homePageData.trendingProducts} wishlistArr={wishlistData} addToWishlist={addToWish} userAuth={props.USER_AUTH} />
-                        {
+
+                        <HomeManufacturerView strings={strings} navigation={props.navigation} data={homePageStoredData.manufacturers} />
+
+
+                        {/* {
                             homePageStoredData.banners?.images.length > 0 && homePageStoredData.banners?.images[2] &&
                             <HomeBanners image={homePageStoredData.banners?.images[2].image} link={homePageStoredData.banners?.images[2]} />
-                        }
+                        } */}
                         {Object.keys(homePageData.categoryWiseProduct).length > 0 && Object.keys(homePageData.categoryWiseProduct).map((item, index) => {
                             return renderCategoryWiseProduct(item, index);
                         })}
@@ -387,8 +405,7 @@ function HomeScreen(props) {
                             <HomeBanners image={homePageStoredData.banners?.images[3].image} link={homePageStoredData.banners?.images[3]} />
                         }
                         {/* HomeManufacturerView Component */}
-                        <HomeManufacturerView strings={strings} navigation={props.navigation} data={homePageStoredData.manufacturers} />
-
+                        
                     </>
                 }
             </OtrixContent>
@@ -428,7 +445,7 @@ const styles = StyleSheet.create({
         width: wp('6.5%'),
         height: hp('6.5%'),
         resizeMode: 'contain',
-        tintColor: Colors().custom_pink,
+        tintColor: Colors().white,
     },
     headerCenter: {
         flex: 0.75,
@@ -437,8 +454,8 @@ const styles = StyleSheet.create({
     },
     headingTxt: {
         fontFamily: Fonts.Font_Bold,
-        fontSize: wp('6.5%'),
-        color: Colors().themeColor
+        fontSize: wp('4.5%'),
+        color: Colors().white
     },
     headerLeft: {
         flex: 0.15,

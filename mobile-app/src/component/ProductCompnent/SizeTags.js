@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     },
     tagStyle: {
         color: Colors().black,
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         fontSize: wp('3%')
     },
     borderBox: {

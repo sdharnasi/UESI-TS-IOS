@@ -2,7 +2,7 @@ Arguments:
   /opt/homebrew/Cellar/node/20.2.0/bin/node /Users/ap/.npm/_npx/c094c3349f8dd527/node_modules/.bin/yarn
 
 PATH: 
-  /Users/ap/.npm/_npx/c094c3349f8dd527/node_modules/.bin:/Users/ap/Desktop/reactnative/otrixcommercelaravelapp/node_modules/.bin:/Users/ap/Desktop/reactnative/node_modules/.bin:/Users/ap/Desktop/node_modules/.bin:/Users/ap/node_modules/.bin:/Users/node_modules/.bin:/node_modules/.bin:/opt/homebrew/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin
+  /Users/ap/.npm/_npx/c094c3349f8dd527/node_modules/.bin:/Users/ap/Desktop/reactnative/UESITSapp/node_modules/.bin:/Users/ap/Desktop/reactnative/node_modules/.bin:/Users/ap/Desktop/node_modules/.bin:/Users/ap/node_modules/.bin:/Users/node_modules/.bin:/node_modules/.bin:/opt/homebrew/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin
 
 Yarn version: 
   1.22.19
@@ -23,7 +23,7 @@ Trace:
 
 npm manifest: 
   {
-    "name": "otrixcommercelaravel",
+    "name": "UESITS",
     "version": "0.0.1",
     "private": true,
     "scripts": {

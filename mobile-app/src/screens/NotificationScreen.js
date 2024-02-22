@@ -92,7 +92,7 @@ function NotificationScreen(props) {
                                 </View>
                                 <View style={{ flexDirection: 'column', flex: 0.60, justifyContent: 'center', alignItems: 'flex-start' }}>
                                     <Text style={{ color: Colors().black, fontFamily: Fonts.Font_Bold, fontSize: wp('4.5%'), textAlign: 'left' }}>{item.title}</Text>
-                                    <Text style={{ color: Colors().secondry_text_color, fontFamily: Fonts.Font_Semibold, fontSize: wp('3.2%'), textAlign: 'left' }} numberOfLines={4}>{item.body}</Text>
+                                    <Text style={{ color: Colors().secondry_text_color, fontFamily: Fonts.Font_Medium, fontSize: wp('3.2%'), textAlign: 'left' }} numberOfLines={4}>{item.body}</Text>
                                 </View>
                             </TouchableOpacity>
                         }>
@@ -116,7 +116,7 @@ export default connect(mapStateToProps, {})(NotificationScreen);
 
 const styles = StyleSheet.create({
     title: {
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         fontSize: wp('3.8%'),
         color: Colors().black,
         marginLeft: wp('2%')
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     },
     txt: {
         fontSize: wp('4%'),
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         color: Colors().text_color,
         textAlign: 'left'
     },
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     textchk: {
         color: Colors().text_color,
         fontSize: wp('4%'),
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         flex: 0.90
     }
 });

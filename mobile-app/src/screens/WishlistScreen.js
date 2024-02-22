@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     emptyTxt: {
         fontSize: wp('6%'),
         marginVertical: hp('1.5%'),
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         color: Colors().secondry_text_color
     }
 });

@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     },
     txt: {
         fontSize: wp('4%'),
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         color: Colors().text_color,
         textAlign: 'left'
     }

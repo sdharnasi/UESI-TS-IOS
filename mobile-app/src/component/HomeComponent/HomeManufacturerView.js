@@ -9,12 +9,14 @@ import { logfunction } from "@helpers/FunctionHelper";
 
 function HomeManufacturer(props) {
     logfunction("dir ", ASSETS_DIR + 'category/');
-
+    const navigateToManufecturerScreen = () =>{
+        props.navigation.navigate('MenufecturerScreen');
+    }
     return (
         <View>
             <View style={styles.catHeading} >
-                <Text style={GlobalStyles.boxHeading}>{props.strings.homepage.label_shop_by_brands}</Text>
-                <TouchableOpacity style={{ flex: 0.50 }} onPress={() => props.navigation.navigate('MenufecturerScreen')}>
+                <Text style={GlobalStyles.boxHeading}>srinivas - {props.strings.homepage.label_shop_by_brands}</Text>
+                <TouchableOpacity style={{ flex: 0.50 }} onPress={() => navigateToManufecturerScreen()}>
                     <Text style={GlobalStyles.viewAll}>{props.strings.homepage.viewall}</Text>
                 </TouchableOpacity>
             </View>

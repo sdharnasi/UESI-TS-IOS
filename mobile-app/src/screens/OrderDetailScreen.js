@@ -562,7 +562,7 @@ export default connect(mapStateToProps)(OrderDetailScreen);
 const styles = StyleSheet.create({
 
     deliveryTitle: {
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         fontSize: wp('3.8%'),
         color: Colors().text_color,
         marginLeft: wp('2%')
@@ -675,7 +675,7 @@ const styles = StyleSheet.create({
     price: {
         color: Colors().link_color,
         fontSize: wp('4%'),
-        fontFamily: Fonts.Font_Semibold
+        fontFamily: Fonts.Font_Medium
     },
     leftView: {
         flex: 0.35,
@@ -689,12 +689,12 @@ const styles = StyleSheet.create({
         flex: 0.65
     },
     leftTxt: {
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         fontSize: wp('3.5%'),
         color: Colors().secondry_text_color
     },
     rightTxt: {
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         fontSize: wp('4%'),
         color: Colors().text_color
     },
@@ -730,7 +730,7 @@ const styles = StyleSheet.create({
     },
     rateTitle: {
         textAlign: 'center',
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         fontSize: wp('4.5%'),
         color: Colors().black,
         marginVertical: hp('1.5%')

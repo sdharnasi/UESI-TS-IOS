@@ -19,34 +19,34 @@ import { bindActionCreators } from 'redux';
 import { doLogin } from '@actions';
 import getApi from "@apis/getApi";
 import Toast from 'react-native-root-toast';
-import FBSDK, { LoginManager } from 'react-native-fbsdk';
+//import FBSDK, { LoginManager } from 'react-native-fbsdk';
 import auth from '@react-native-firebase/auth';
 import { firebase } from '@react-native-firebase/app';
 import { CountryPicker } from "react-native-country-codes-picker";
 import OTPInputView from '@twotalltotems/react-native-otp-input'
-
-const { AccessToken, GraphRequest, GraphRequestManager } = FBSDK;
-import {
-    GoogleSignin,
-    GoogleSigninButton,
-    statusCodes,//
-} from '@react-native-google-signin/google-signin';
+import { getUniqueId, getManufacturer, getDeviceName } from 'react-native-device-info';
+//const { AccessToken, GraphRequest, GraphRequestManager } = FBSDK;
+// import {
+//     GoogleSignin,
+//     GoogleSigninButton,
+//     statusCodes,//
+// } from '@react-native-google-signin/google-signin';
 import AsyncStorage from "@react-native-community/async-storage";
-GoogleSignin.configure({
-    webClientId: '12345789-g2folaog0ck90vhbvbooqthq397qvk5p.apps.googleusercontent.com',
-    scopes: ['profile', 'email']
-});
+// GoogleSignin.configure({
+//     webClientId: '839752534297-qrtp6qfst040kr7e9n9f89p1vrgeihep.apps.googleusercontent.com',
+//     scopes: ['profile', 'email']
+// });
 
 try {
     if (!firebase.apps.length) {
         firebase.initializeApp({
-            apiKey: 'AIzaSyBiWkpoLjN5kZY2cxphsM1v20000000000',
-            authDomain: 'otrixcommerce123.firebaseapp.com',
+            apiKey: 'AIzaSyAzVSurFpcSz4917vFWWZl_nZbzMPmCLCM',
+            authDomain: 'uesits-55284.firebaseapp.com',
             databaseURL: '',
-            projectId: 'otrix-commerce',
+            projectId: 'uesits-55284',
             storageBucket: '',
-            appId: "1:123123123123:ios:a5e57cfc08ff88df6cb6c4",
-            messagingSenderId: '123123123123'
+            appId: "1:839752534297:android:40b19dd9cab10c64e5dd88",
+            messagingSenderId: '839752534297'
         });
     }
 } catch (err) {
@@ -61,7 +61,7 @@ try {
 
 function LoginScreen(props) {
 
-    const [formData, setData] = React.useState({ email: null, password: null, submited: false, loading: false, type: null, message: null, verificationView: false, navTo: 'HomeScreen', mobileSubmitted: false, });
+    const [formData, setData] = React.useState({ email: null, password: null, submited: false, loading: false, type: null, message: null, verificationView: false, navTo: 'UESIHomeScreen', mobileSubmitted: false, });
     const [state, setDatapassword] = React.useState({ secureEntry: true });
     const [errors, setErrors] = React.useState({});
     const { email, password, submited, loading, message, type, navTo, verificationView } = formData;
@@ -72,9 +72,16 @@ function LoginScreen(props) {
     const [countryCode, setCountryCode] = React.useState('+91');
     const [otpLoading, setOTPLoading] = React.useState(false);
     const [otpp, setOTP] = React.useState(null);
+    const [deviceId, setDeviceId] = React.useState('');
+    const [deviceName, setDeviceName] = React.useState('');
 
     useEffect(() => {
-
+        getUniqueId().then(data=>{
+            setDeviceId(data);
+        });
+        getDeviceName().then(data=>{
+            setDeviceName(data);
+        });
     }, [
         //   props.navigation.navigate('ProfileScreen')
     ]);
@@ -123,12 +130,16 @@ function LoginScreen(props) {
             sendData.append('email', email);
             sendData.append('password', password);
             sendData.append('firebase_token', props.FCM_TOKEN)
-
+            sendData.append('device_id', deviceId );
+            sendData.append('device_name', deviceName );
+            sendData.append('device_name', deviceName );
+            console.log(sendData);
             try {
                 getApi.postData(
                     'user/login',
                     sendData,
                 ).then((response => {
+                    
                     logfunction("RESPONSE ", response)
                     if (response.status == 1) {
                         logfunction("RESPONSE ", 'Success')
@@ -201,6 +212,7 @@ function LoginScreen(props) {
                     'user/checkcustomer',
                     sendData,
                 ).then((async response => {
+                    
                     logfunction("RESPONSE ", response)
                     if (response.status == 1) {
                         const confirmation = await auth().signInWithPhoneNumber(countryCode + '' + mobileNumber);
@@ -241,106 +253,106 @@ function LoginScreen(props) {
     }
 
     //facebook login 🧔🏻
-    _fbAuth = () => {
-        // Attempt a login using the Facebook login dialog asking for default permissions and email.
-        LoginManager.logInWithPermissions(['public_profile', 'email']).then(
-            (result) => {
-                if (result.isCancelled) {
-                } else {
-                    const responseInfoCallback = async (error, result) => {
-                        if (error) {
-                            Toast.show('Error fetching data: ' + error.toString(), {
-                                duration: 3000,
-                                position: Toast.positions.CENTER,
-                                shadow: true,
-                                animation: true,
-                                hideOnPress: true,
-                                delay: 0,
-                            })
-                        } else {
-                            logfunction("Facebook response ", result)
-                            let email = result.email ? result.email : result.id;
-                            let image = result.picture ? result.picture.data.url : '';
-                            let sendData = new FormData();
-                            sendData.append("email", email)
-                            sendData.append("password", result.id)
-                            sendData.append("creation", 'F')
-                            sendData.append('firebase_token', props.FCM_TOKEN)
+    // _fbAuth = () => {
+    //     // Attempt a login using the Facebook login dialog asking for default permissions and email.
+    //     LoginManager.logInWithPermissions(['public_profile', 'email']).then(
+    //         (result) => {
+    //             if (result.isCancelled) {
+    //             } else {
+    //                 const responseInfoCallback = async (error, result) => {
+    //                     if (error) {
+    //                         Toast.show('Error fetching data: ' + error.toString(), {
+    //                             duration: 3000,
+    //                             position: Toast.positions.CENTER,
+    //                             shadow: true,
+    //                             animation: true,
+    //                             hideOnPress: true,
+    //                             delay: 0,
+    //                         })
+    //                     } else {
+    //                         logfunction("Facebook response ", result)
+    //                         let email = result.email ? result.email : result.id;
+    //                         let image = result.picture ? result.picture.data.url : '';
+    //                         let sendData = new FormData();
+    //                         sendData.append("email", email)
+    //                         sendData.append("password", result.id)
+    //                         sendData.append("creation", 'F')
+    //                         sendData.append('firebase_token', props.FCM_TOKEN)
 
-                            setData({
-                                ...formData,
-                                loading: true
-                            });
+    //                         setData({
+    //                             ...formData,
+    //                             loading: true
+    //                         });
 
-                            //login to our server 🧛🏻‍♀️
-                            try {
-                                getApi.postData(
-                                    'user/socialLogin',
-                                    sendData,
-                                ).then((response => {
-                                    logfunction("Social RESPONSE ", response)
-                                    if (response.status == 1) {
-                                        logfunction("RESPONSE ", 'Success')
-                                        setData({
-                                            ...formData,
-                                            email: null,
-                                            password: null,
-                                            loading: false
-                                        });
-                                        props.doLogin(response, navTo);
-                                    }
-                                    else {
-                                        //navigation part  😎
-                                        if (response.new == 1) {
-                                            props.navigation.navigate("SocialRegisterScreen", { s_email: email, s_socialID: result.id, s_image: image, s_firstName: result.first_name ? result.first_name : '', s_lastName: result.last_name ? result.last_name : '', s_creation: 'F' });
-                                        }
-                                        else {
-                                            setData({
-                                                ...formData,
-                                                type: 'error',
-                                                message: response.message,
-                                                loading: false
-                                            });
-                                            setTimeout(() => {
-                                                setData({
-                                                    ...formData,
-                                                    message: null,
-                                                    loading: false
-                                                })
-                                            }, 3000);
-                                        }
+    //                         //login to our server 🧛🏻‍♀️
+    //                         try {
+    //                             getApi.postData(
+    //                                 'user/socialLogin',
+    //                                 sendData,
+    //                             ).then((response => {
+    //                                 logfunction("Social RESPONSE ", response)
+    //                                 if (response.status == 1) {
+    //                                     logfunction("RESPONSE ", 'Success')
+    //                                     setData({
+    //                                         ...formData,
+    //                                         email: null,
+    //                                         password: null,
+    //                                         loading: false
+    //                                     });
+    //                                     props.doLogin(response, navTo);
+    //                                 }
+    //                                 else {
+    //                                     //navigation part  😎
+    //                                     if (response.new == 1) {
+    //                                         props.navigation.navigate("SocialRegisterScreen", { s_email: email, s_socialID: result.id, s_image: image, s_firstName: result.first_name ? result.first_name : '', s_lastName: result.last_name ? result.last_name : '', s_creation: 'F' });
+    //                                     }
+    //                                     else {
+    //                                         setData({
+    //                                             ...formData,
+    //                                             type: 'error',
+    //                                             message: response.message,
+    //                                             loading: false
+    //                                         });
+    //                                         setTimeout(() => {
+    //                                             setData({
+    //                                                 ...formData,
+    //                                                 message: null,
+    //                                                 loading: false
+    //                                             })
+    //                                         }, 3000);
+    //                                     }
 
-                                    }
-                                }));
-                            } catch (error) {
-                                logfunction("Error", error)
-                                setData({
-                                    ...formData,
-                                    loading: false
-                                });
-                            }
+    //                                 }
+    //                             }));
+    //                         } catch (error) {
+    //                             logfunction("Error", error)
+    //                             setData({
+    //                                 ...formData,
+    //                                 loading: false
+    //                             });
+    //                         }
 
-                        }
-                    }
-                    // Create a graph request asking for user email and names with a callback to handle the response.
-                    const infoRequest = new GraphRequest('/me', {
-                        parameters: {
-                            fields: {
-                                string: 'email,name,first_name,last_name,picture,gender',
-                            }
-                        }
-                    },
-                        responseInfoCallback
-                    );
-                    // Start the graph request.
-                    new GraphRequestManager().addRequest(infoRequest).start()
-                }
-            },
-            function (error) {
-                alert('Login fail with error: ' + error);
-            }
-        );
-    }
+    //                     }
+    //                 }
+    //                 // Create a graph request asking for user email and names with a callback to handle the response.
+    //                 const infoRequest = new GraphRequest('/me', {
+    //                     parameters: {
+    //                         fields: {
+    //                             string: 'email,name,first_name,last_name,picture,gender',
+    //                         }
+    //                     }
+    //                 },
+    //                     responseInfoCallback
+    //                 );
+    //                 // Start the graph request.
+    //                 new GraphRequestManager().addRequest(infoRequest).start()
+    //             }
+    //         },
+    //         function (error) {
+    //             alert('Login fail with error: ' + error);
+    //         }
+    //     );
+    // }
 
 
     //google sigin
@@ -489,7 +501,7 @@ function LoginScreen(props) {
                     {/* Login with OTP Start from here */}
 
 
-                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                    {/* <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                         <TouchableOpacity
                             onPress={() => setShow(true)}
                             style={{
@@ -529,19 +541,19 @@ function LoginScreen(props) {
                             }
 
                         </FormControl>
-                    </View>
+                    </View> */}
 
-                    <CountryPicker
+                    {/* <CountryPicker
                         show={show}
                         // when picker button press you will get the country object with dial code
                         pickerButtonOnPress={(item) => {
                             setCountryCode(item.dial_code);
                             setShow(false);
                         }}
-                    />
-                    <OtrixDivider size={'sm'} />
-                    <OtrixDivider size={'md'} />
-                    <Button
+                    /> */}
+                    {/* <OtrixDivider size={'sm'} />
+                    <OtrixDivider size={'md'} /> */}
+                    {/* <Button
                         size="md"
                         variant="solid"
                         bg={Colors().themeColor}
@@ -550,12 +562,12 @@ function LoginScreen(props) {
                         onPress={() => sendOtp()}
                     >
                         <Text style={GlobalStyles.buttonText}>{strings.login.button_login}</Text>
-                    </Button>
-                    <OtrixDivider size={'md'} />
+                    </Button> */}
+                    {/* <OtrixDivider size={'md'} />
 
-                    <OtrixDivider size={'md'} />
+                    <OtrixDivider size={'md'} /> */}
 
-                    <View
+                    {/* <View
                         style={styles.divider}>
                         <View
                             style={styles.dividerLine}
@@ -564,7 +576,7 @@ function LoginScreen(props) {
                             style={styles.dividerTxt}>
                             OR
                         </Text>
-                    </View>
+                    </View> */}
 
 
 
@@ -634,7 +646,7 @@ function LoginScreen(props) {
                     <OtrixDivider size={'md'} />
 
                     {/* Social Container Component */}
-                    <OtrixSocialContainer facebookLogin={_fbAuth} googleLogin={_googleAuth} />
+                    {/* <OtrixSocialContainer facebookLogin={_fbAuth} googleLogin={_googleAuth} /> */}
 
                 </OtrixContent> : <OtrixContent>
 
@@ -717,7 +729,7 @@ const styles = StyleSheet.create({
     signupTxt: {
         fontSize: wp('3.5%'),
         textAlign: 'right',
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         color: Colors().link_color
     },
     divider: {
@@ -758,7 +770,7 @@ const styles = StyleSheet.create({
     },
     otpTitle: {
         fontSize: Platform.isPad === true ? wp('3.5%') : wp('4.5%'),
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         color: Colors().black_text,
         textAlign: 'center',
         marginBottom: wp('2.5%'),

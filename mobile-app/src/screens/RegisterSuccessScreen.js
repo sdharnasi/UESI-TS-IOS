@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     signupTxt: {
         fontSize: wp('3.5%'),
         textAlign: 'right',
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         color: Colors().link_color
     },
 });

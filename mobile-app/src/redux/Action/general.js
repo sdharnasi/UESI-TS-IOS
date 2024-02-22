@@ -116,6 +116,9 @@ export function successCheckout() {
 }
 
 export function authStatus(status, token) {
+    console.log('calling   authStatus');
+    console.log(token);
+    console.log(status);
     logfunction("PAYLOAD IN authStatus AUTH", status)
 
     return {
@@ -164,4 +167,72 @@ export function storeFCM(fcmToken) {
             fcmToken
         }
     }
+}
+
+export function selectSong(data) {
+    return {
+        type: types.SELECT_SONG,
+        payload: {
+            data
+        }
+    };
+}
+export function setSongsDonated(data) {
+    return {
+        type: types.SET_SONGS_DONATED,
+        payload: {
+            data
+        }
+    };
+}
+
+export function setSongs(data) {
+    return {
+        type: types.SELECTED_SONGS_LIST,
+        payload: {
+            data
+        }
+    };
+}
+
+export function setSongType(data) {
+    return {
+        type: types.SONG_TYPE,
+        payload: {
+            data
+        }
+    };
+}
+export function setMagazineType(data) {
+    return {
+        type: types.MAGAZINE_TYPE,
+        payload: {
+            data
+        }
+    };
+}
+
+export function setPaymentModuleType(data) {
+    return {
+        type: types.PAYMENT_MODULE_TYPE,
+        payload: {
+            data
+        }
+    };
+}
+    export function setReloginVerified(data) {
+        return {
+            type: types.RELOGIN_VERIFIED,
+            payload: {
+                data
+            }
+        };
+    }
+export function setTriconType(data) {
+    return {
+        type: types.TRICON_TYPE,
+        payload: {
+            data
+        }
+    };
 }

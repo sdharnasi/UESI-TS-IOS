@@ -301,7 +301,7 @@ function CheckoutScreen(props) {
                 keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}>
                 {!noRecord && !loading && <View style={styles.checkoutView}>
                     <View style={styles.couponInput}>
-                        <Input variant="outline" placeholder={strings.cart.coupon_code + ' (use otrixweb)'} style={[GlobalStyles.textInputStyle, styles.inputStyle]}
+                        <Input variant="outline" placeholder={strings.cart.coupon_code + ' (use uesi-ts)'} style={[GlobalStyles.textInputStyle, styles.inputStyle]}
                             onChangeText={(couponCode) => setState({ ...state, couponCode })}
                             onSubmitEditing={applyCouponCode}
                             InputRightElement={
@@ -413,7 +413,7 @@ const styles = StyleSheet.create({
     },
     applyTxt: {
         color: Colors().link_color,
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         fontSize: wp('4%'),
     },
     applyView: { marginHorizontal: wp('2%'), justifyContent: 'center', alignItems: 'center', padding: 5 },
@@ -445,7 +445,7 @@ const styles = StyleSheet.create({
     emptyTxt: {
         fontSize: wp('6%'),
         marginVertical: hp('1.5%'),
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         color: Colors().secondry_text_color
     }
 });

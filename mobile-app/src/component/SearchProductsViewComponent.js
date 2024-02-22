@@ -57,9 +57,9 @@ function SearchProductsViewComponent(props) {
                                 />
                             </View>
                             <View style={styles.infromationView}>
-                                <TouchableOpacity>
+                                
                                     <Text style={styles.name}>{item.product_description.name}</Text>
-                                </TouchableOpacity>
+                                
 
                                 {
                                     special > 0 ?
@@ -127,10 +127,11 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start'
     },
     name: {
-        textAlign: 'center',
+        textAlign: 'left',
         color: Colors().secondry_text_color,
         fontSize: wp('3.8%'),
         fontFamily: Fonts.Font_Bold,
+        textTransform: 'capitalize'
     },
     // price: {
     //     textAlign: 'center',
@@ -199,7 +200,7 @@ const styles = StyleSheet.create({
         flex: 0.30,
         textAlign: 'center',
         color: Colors().link_color,
-        fontFamily: Fonts.Font_Semibold,
+        fontFamily: Fonts.Font_Medium,
         fontSize: wp('2.2%'),
         textTransform: 'uppercase',
         borderRadius: 5

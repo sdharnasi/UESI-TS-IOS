@@ -1,6 +1,6 @@
 
 const MostSearchArr = [
-    'Smart Watch', 'Shoes', 'Bag', 'Cap', 'Sun Glass', 'Mac', 'Shirts for Men', 'Perfume', 'Cloths'
+    'Women', 'Missions', 'Biography', 'Prayer', 'Evangelism'
 ];
 
 export default MostSearchArr;
